@@ -8,6 +8,8 @@ import pl.coderslab.entity.User;
 import pl.coderslab.service.CurrentUser;
 import pl.coderslab.service.UserService;
 
+
+
 @Controller
 public class TestController {
 
@@ -21,14 +23,15 @@ public class TestController {
     @ResponseBody
     public String admin(@AuthenticationPrincipal CurrentUser customUser) {
         User entityUser = customUser.getUser();
-        return "Hello " + entityUser.getUsername();
+
+        return entityUser.toString();
     }
 
     @GetMapping("/create-user")
     @ResponseBody
     public String createUser() {
         User user = new User();
-        user.setUsername("admin2");
+        user.setUsername("admin");
         user.setPassword("admin");
         userService.saveUser(user);
         return "admin";

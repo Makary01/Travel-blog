@@ -36,10 +36,7 @@ public class User {
     @NotNull
     private Integer enabled;
 
-    @OneToMany
-    private List<Comment> comments;
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Trip> trips;
 
     @Email
