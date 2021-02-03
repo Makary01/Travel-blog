@@ -34,7 +34,6 @@ public class User {
     private Set<Role> roles;
 
     @NotNull
-    @Size(min = 1,max = 1)
     private Integer enabled;
 
     @OneToMany

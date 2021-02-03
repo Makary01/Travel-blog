@@ -8,6 +8,7 @@ import pl.coderslab.repositories.RoleRepository;
 import pl.coderslab.repositories.UserRepository;
 import pl.coderslab.service.UserService;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -35,6 +36,10 @@ public class UserServiceImpl implements UserService {
 
         //ACTIVATING USER
         user.setEnabled(1);
+
+        //SETTING CREATED DATE
+        LocalDate now = LocalDate.now();
+        user.setCreated(now);
 
         //ASSIGNING DEFAULT ROLE
         Role userRole = roleRepository.findByName("ROLE_USER");
