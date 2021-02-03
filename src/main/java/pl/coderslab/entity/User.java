@@ -2,10 +2,13 @@ package pl.coderslab.entity;
 
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -26,20 +29,30 @@ public class User {
     @NotNull
     private String password;
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @NotNull
     private Set<Role> roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private UserDetails details;
-
     @NotNull
     @Size(min = 1,max = 1)
-    private Integer isEnabled;
+    private Integer enabled;
 
     @OneToMany
     private List<Comment> comments;
 
     @OneToMany
     private List<Trip> trips;
+
+    @Email
+    @Size(max = 127)
+    private String email;
+
+    @Size(max = 127)
+    private String country;
+
+    @Size(max = 127)
+    private String city;
+
+    @CreatedDate
+    private LocalDate created;
 }

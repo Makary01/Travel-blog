@@ -29,7 +29,7 @@ public class Trip {
 
     @Size(min = 1,max = 4)
     @NotNull
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Type> types;
 
     @Size(max = 255)
