@@ -21,32 +21,32 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    @Size(min = 5,max = 20)
-    @NotNull
+    @Size(min = 5,max = 20,message = "Username should contain 5 to 20 charters")
     private String username;
 
-    @Size(max = 255)
-    @NotNull
+    @NotNull(message = "Password should contain 5 to 20 charters")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @NotNull
     private Set<Role> roles;
 
-    @NotNull
     private Integer enabled;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Trip> trips;
 
-    @Email
-    @Size(max = 127)
+    @Column(unique = true)
+    @Email(message = "Enter valid email")
+    @Size(min=5, max = 254, message = "Enter valid email")
+    @NotNull(message = "Enter email")
     private String email;
 
-    @Size(max = 127)
+    @Size(min = 2, max = 127,message = "Country name must contain at least 2 charters")
+    @NotNull(message = "Enter country name")
     private String country;
 
-    @Size(max = 127)
+    @Size(min = 2, max = 127,message = "City name must contain at least 2 charters")
+    @NotNull(message = "Enter city name")
     private String city;
 
     @CreatedDate

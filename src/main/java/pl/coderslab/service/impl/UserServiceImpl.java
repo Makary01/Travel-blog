@@ -10,6 +10,8 @@ import pl.coderslab.repositories.UserRepository;
 import pl.coderslab.service.UserService;
 
 import javax.swing.text.html.Option;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) {
+    public User saveUser(User user) throws SQLIntegrityConstraintViolationException {
         //ENCRYPTING PASSWORD
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -48,7 +50,13 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByName("ROLE_USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 
-        //RETURNING SAVED USER
+        //CHECKING IF USERNAME IS AVAILABLE
+        if(null != userRepository.findByUsername(user.getUsername()))
+            throw new SQLIntegrityConstraintViolationException("Username already taken");
+
+        if(null != userRepository.findByEmail(user.getEmail()))
+            throw new SQLIntegrityConstraintViolationException("Email already taken");
+
         return userRepository.save(user);
     }
 
