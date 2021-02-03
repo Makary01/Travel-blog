@@ -1,5 +1,6 @@
 package pl.coderslab.service.impl;
 
+import javassist.NotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Role;
@@ -8,9 +9,11 @@ import pl.coderslab.repositories.RoleRepository;
 import pl.coderslab.repositories.UserRepository;
 import pl.coderslab.service.UserService;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,5 +50,15 @@ public class UserServiceImpl implements UserService {
 
         //RETURNING SAVED USER
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findById(Long id) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        }else {
+            throw new NotFoundException(id.toString());
+        }
     }
 }

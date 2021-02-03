@@ -1,5 +1,6 @@
 package pl.coderslab.service;
 
+import javassist.NotFoundException;
 import pl.coderslab.entity.User;
 
 public interface UserService {
@@ -8,4 +9,5 @@ public interface UserService {
 
     User saveUser(User user);
 
+    User findById(Long id) throws NotFoundException;
 }
