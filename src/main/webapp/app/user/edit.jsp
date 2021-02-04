@@ -7,6 +7,9 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+
+<h1>Edit profile</h1>
+<a href="/app/dashboard">Back to home page</a>
 <form:form method="POST"
            modelAttribute="user"
            action="/app/user/edit">
@@ -28,7 +31,6 @@
     <input type="submit" value="Save">
     <p><form:errors path="*" /></p>
 </form:form>
-
-</div>
+<a href="/app/user/change-password">Change password</a>
 </body>
 </html>

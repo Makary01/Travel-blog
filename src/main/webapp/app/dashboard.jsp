@@ -3,10 +3,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Edit profile</title>
+    <title>Dashboard</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+<h1>Dashboard</h1>
+<a href="/app/user">Profile</a>
+<a href="/logout">Logout</a>
 
 </div>
 </body>

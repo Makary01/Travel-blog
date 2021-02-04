@@ -42,9 +42,6 @@ public class UserServiceImpl implements UserService {
         //ENCRYPTING PASSWORD
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        //ACTIVATING USER
-        user.setDeleted(null);
-
         //SETTING CREATED DATE
         LocalDate now = LocalDate.now();
         user.setCreated(now);

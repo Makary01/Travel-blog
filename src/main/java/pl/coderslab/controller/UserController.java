@@ -25,78 +25,54 @@ import java.io.IOException;
 
 
 @Controller
+@RequestMapping("/app/user")
 public class UserController {
 
-    private final Validator validator;
     private final UserService userService;
 
-    public UserController(UserService userService, Validator validator, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.validator = validator;
     }
 
 
     //============================================
     //          READ CURRENTLY LOGGED USER
     //============================================
-    @GetMapping("/app/user")
+    @GetMapping("")
     public String readSelf(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         User user = currentUser.getUser();
         model.addAttribute(user);
-        return "user/selfProfile";
+        return "app/user/ownProfile";
     }
+
+
+
 
 
     //============================================
     //          READ SELECTED USER
     //============================================
-    @GetMapping("/app/user/{id:\\d+}")
-    public String readSelected(@PathVariable Long id, HttpServletResponse response, Model model) throws IOException {
+    @GetMapping("/{id:\\d+}")
+    public String readSelected(@PathVariable Long id, HttpServletResponse response,
+                               @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+        if(currentUser.getUser().getId()==id) return "redirect:/app/user";
         try {
             User user = userService.findById(id);
             model.addAttribute(user);
         } catch (NotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        return "user/profile";
+        return "app/user/selectedProfile";
     }
 
 
-    //============================================
-    //          CREATE NEW USER
-    //============================================
 
-    //  REGISTER FORM
-    @GetMapping("/register")
-    public String registerForm(Model model) {
-        model.addAttribute("user", new User());
-        return "register";
-    }
-
-    //  SAVE NEW USER
-    @PostMapping("/register")
-    public String registerAction(@ModelAttribute @Valid User user, BindingResult result) {
-        if (result.hasErrors()) return "register";
-        if (user.getPassword().length() < 5 || user.getPassword().length() > 20) {
-            result.addError(new ObjectError("password", "Password must contain 5 to 20 charters"));
-            return "register";
-        }
-        try {
-            userService.saveNewUser(user);
-            return "redirect:app/dashboard";
-        } catch (UniqueValuesException e) {
-            result.addError(new ObjectError(e.getObjectName(), e.getMessage()));
-            return "register";
-        }
-    }
 
 
     //============================================
     //          UPDATE USER
     //============================================
-
-    //  UPDATE USER FORM
-    @GetMapping("/app/user/edit")
+    @GetMapping("/edit")
     public String updateForm(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         User user = currentUser.getUser();
         User userToEdit = new User();
@@ -109,57 +85,52 @@ public class UserController {
 
         model.addAttribute("user", userToEdit);
 
-        return "user/edit";
+        return "app/user/edit";
     }
-
-    //  SAVE UPDATED USER
-    @PostMapping("/app/user/edit")
+    @PostMapping("/edit")
     public String updateAction(@AuthenticationPrincipal CurrentUser currentUser,
                                @ModelAttribute("user") @Valid User editedUser, BindingResult result) {
-        if (result.hasErrors()) return "user/edit";
+        if (result.hasErrors()) return "app/user/edit";
         User user = currentUser.getUser();
         editedUser.setId(user.getId());
         editedUser.setRoles(user.getRoles());
         editedUser.setCreated(user.getCreated());
-        editedUser.setDeleted(user.getDeleted());
         editedUser.setTrips(user.getTrips());
 
         if (userService.checkPassword(editedUser.getPassword(), user.getPassword())) {
             editedUser.setPassword(user.getPassword());
         } else {
             result.addError(new ObjectError("password", "Password incorect"));
-            return "user/edit";
+            return "app/user/edit";
         }
         try {
             user = userService.saveEditedUser(editedUser);
             return "redirect:/app/dashboard";
         } catch (UniqueValuesException e) {
             result.addError(new ObjectError(e.getObjectName(), e.getMessage()));
-            return "user/edit";
+            return "app/user/edit";
         }
     }
+
+
+
 
 
     //============================================
     //          CHANGE PASSWORD
     //============================================
-
-    //  CHANGE PASSWORD FORM
-    @GetMapping("/app/user/change-password")
+    @GetMapping("/change-password")
     public String changePasswordForm(Model model) {
         model.addAttribute("passwordChanger", new PasswordChanger("",""));
-        return "/user/changePassword";
+        return "app/user/changePassword";
     }
-
-    //  SAVE CHANGED PASSWORD
-    @PostMapping("/app/user/change-password")
+    @PostMapping("/change-password")
     public String changePasswordAction(@AuthenticationPrincipal CurrentUser currentUser,
                                        @ModelAttribute PasswordChanger passwordChanger, BindingResult result) {
-
         User user = currentUser.getUser();
         passwordChanger.validatePasswords(result,user.getUsername(),userService);
         if(result.hasErrors()){
-            return "/user/changePassword";
+            return "app/user/changePassword";
         }else {
             passwordChanger.saveNewPassword(user,userService);
             return "redirect:/app/dashboard";
@@ -167,11 +138,18 @@ public class UserController {
 
     }
 
+
+
+
     //============================================
     //          DELETE USER
     //============================================
-    @GetMapping("/app/user/delete")
-    public String deleteUser(@AuthenticationPrincipal CurrentUser currentUser){
+    @GetMapping("/delete-account")
+    public String deleteUserForm(){
+        return "app/user/confirmDelete";
+    }
+    @PostMapping("/delete-account")
+    public String deleteUserAction(@AuthenticationPrincipal CurrentUser currentUser){
         User user = currentUser.getUser();
         userService.deleteUser(user);
         SecurityContextHolder.getContext().setAuthentication(null);

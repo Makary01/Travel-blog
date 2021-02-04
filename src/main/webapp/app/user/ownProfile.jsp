@@ -2,17 +2,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${user.username}'s profile</title>
+    <title>My profile</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
-<a href="/home">Back to home page</a><br>
+<a href="/app/dashboard">Back to home page</a>
+
+<h1>My profile</h1>
+
 <div id="container">
-    User nr${user.id}<br>
-    Username: ${user.username}<br>
-    From: ${user.city},${user.country}<br>
-    Email: ${user.email}<br><br>
+    <p>User nr ${user.id}</p>
+    <p>Username: ${user.username}</p>
+    <p>From: ${user.city},${user.country}</p>
+    <p>Email: ${user.email}</p>
 
 <%--    User's trips:--%>
 <%--    <ul>--%>
@@ -21,5 +24,9 @@
 <%--        </c:forEach>--%>
 <%--    </ul>--%>
 </div>
+<a href="/app/user/edit">Edit profile</a>
+<a href="/app/user/change-password">Change password</a>
+<a href="/app/user/delete-account">Delete account</a>
+
 </body>
 </html>

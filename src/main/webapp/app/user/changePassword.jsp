@@ -7,6 +7,8 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+<h1>Change password</h1>
+<a href="/app/dashboard">Back to home page</a>
 <form:form method="POST"
            modelAttribute="passwordChanger"
            action="/app/user/change-password">

@@ -41,9 +41,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Trip> trips;
 
-    @Null
-    private LocalDate deleted;
-
     @Email(message = "Enter valid email")
     @Size(min=5, max = 254, message = "Email must contain {min} to {max} charters")
     @NotNull(message = "Enter email")
