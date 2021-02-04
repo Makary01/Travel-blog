@@ -20,8 +20,6 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users  SET deleted = CURRENT_DATE WHERE id=?")
-@Where(clause = "deleted IS NULL")
 
 public class User {
 
