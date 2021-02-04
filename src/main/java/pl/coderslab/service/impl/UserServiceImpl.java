@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Role;
 import pl.coderslab.entity.User;
+import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.repositories.RoleRepository;
 import pl.coderslab.repositories.UserRepository;
 import pl.coderslab.service.UserService;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) throws SQLIntegrityConstraintViolationException {
+    public User saveUser(User user) throws UniqueValuesException {
         //ENCRYPTING PASSWORD
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -52,10 +53,10 @@ public class UserServiceImpl implements UserService {
 
         //CHECKING IF USERNAME IS AVAILABLE
         if(null != userRepository.findByUsername(user.getUsername()))
-            throw new SQLIntegrityConstraintViolationException("Username already taken");
+            throw new UniqueValuesException("Username already taken");
 
         if(null != userRepository.findByEmail(user.getEmail()))
-            throw new SQLIntegrityConstraintViolationException("Email already taken");
+            throw new UniqueValuesException("Email already taken");
 
         return userRepository.save(user);
     }

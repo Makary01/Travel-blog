@@ -10,18 +10,15 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import pl.coderslab.entity.User;
+import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.service.CurrentUser;
 import pl.coderslab.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Optional;
-import java.util.Set;
+
 
 
 @Controller
@@ -75,7 +72,7 @@ public class UserController {
         try{
             userService.saveUser(user);
             return "redirect:app/dashboard";
-        }catch (SQLIntegrityConstraintViolationException e){
+        }catch (UniqueValuesException e){
             result.addError(new ObjectError("username",e.getMessage()));
             return "register";
         }
