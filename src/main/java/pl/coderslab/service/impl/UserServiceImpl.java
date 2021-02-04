@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         //ACTIVATING USER
-        user.setEnabled(1);
+        user.setDeleted(null);
 
         //SETTING CREATED DATE
         LocalDate now = LocalDate.now();
@@ -103,6 +103,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String encodePass(String passToEncode) {
         return passwordEncoder.encode(passToEncode);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 
 }

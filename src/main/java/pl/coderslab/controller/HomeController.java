@@ -9,7 +9,7 @@ import pl.coderslab.entity.User;
 public class HomeController {
 
     //============================================
-    //          MAIN PAGE
+    //              WELCOME PAGE
     //============================================
     @GetMapping("/home")
     public String home(){
@@ -17,5 +17,10 @@ public class HomeController {
         return"home";
     }
 
+    @GetMapping("/app/dashboard")
+    public String dashboard(){
+
+        return "app/dashboard";
+    }
 
 }

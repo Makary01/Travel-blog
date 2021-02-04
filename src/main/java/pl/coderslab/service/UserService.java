@@ -18,4 +18,6 @@ public interface UserService {
     Boolean checkPassword(String rawPass, String encodedPass);
 
     String encodePass(String passToEncode);
+
+    void deleteUser(User user);
 }

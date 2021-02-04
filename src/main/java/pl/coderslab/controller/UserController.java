@@ -3,6 +3,7 @@ package pl.coderslab.controller;
 
 import javassist.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,9 +54,6 @@ public class UserController {
     public String readSelected(@PathVariable Long id, HttpServletResponse response, Model model) throws IOException {
         try {
             User user = userService.findById(id);
-            if (user.getEnabled() == 0) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }
             model.addAttribute(user);
         } catch (NotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -125,7 +123,7 @@ public class UserController {
         editedUser.setId(user.getId());
         editedUser.setRoles(user.getRoles());
         editedUser.setCreated(user.getCreated());
-        editedUser.setEnabled(user.getEnabled());
+        editedUser.setDeleted(user.getDeleted());
 
         if (userService.checkPassword(editedUser.getPassword(), user.getPassword())) {
             editedUser.setPassword(user.getPassword());
@@ -141,9 +139,6 @@ public class UserController {
             return "user/edit";
         }
     }
-
-
-    //  WORK IN PROGRESS
 
 
     //============================================
@@ -172,5 +167,20 @@ public class UserController {
         }
 
     }
+
+    //============================================
+    //          DELETE USER
+    //============================================
+    @GetMapping("/app/user/delete")
+    public String deleteUser(@AuthenticationPrincipal CurrentUser currentUser){
+        User user = currentUser.getUser();
+        user.setRoles(null);
+        userService.deleteUser(user);
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return "redirect:/home";
+
+    }
+
+
 
 }

@@ -14,12 +14,12 @@
     From: ${user.city},${user.country}<br>
     Email: ${user.email}<br><br>
 
-    User's trips:
-    <ul>
-        <c:forEach items="${user.trips}" var="trip">
-            <li><a href="/app/adventure?id=${trip.id}">${trip.title}</a>|${trip.type}</li>
-        </c:forEach>
-    </ul>
+<%--    User's trips:--%>
+<%--    <ul>--%>
+<%--        <c:forEach items="${user.trips}" var="trip">--%>
+<%--            <li><a href="/app/adventure?id=${trip.id}">${trip.title}</a>|${trip.type}</li>--%>
+<%--        </c:forEach>--%>
+<%--    </ul>--%>
 </div>
 </body>
 </html>

@@ -2,12 +2,17 @@ package pl.coderslab.entity;
 
 
 import lombok.Data;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,26 +20,27 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users  SET deleted = CURRENT_DATE WHERE id=?")
+@Where(clause = "deleted IS NULL")
+
 public class User {
 
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     @Size(min = 5,max = 20,message = "Username must contain {min} to {max} charters")
     private String username;
 
     @NotNull(message = "Enter password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private Set<Role> roles;
 
-    @Range(min = 0L, max = 1L)
-    private Integer enabled;
+    @Null
+    private LocalDate deleted;
 
-    @Column(unique = true)
     @Email(message = "Enter valid email")
     @Size(min=5, max = 254, message = "Email must contain {min} to {max} charters")
     @NotNull(message = "Enter email")
