@@ -35,8 +35,11 @@ public class User {
     @NotNull(message = "Enter password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Trip> trips;
 
     @Null
     private LocalDate deleted;
@@ -56,4 +59,14 @@ public class User {
 
     @CreatedDate
     private LocalDate created;
+
+
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public Set<Trip> getTrips() {
+        return trips;
+    }
 }

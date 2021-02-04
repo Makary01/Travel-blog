@@ -105,8 +105,6 @@ public class UserController {
         userToEdit.setCity(user.getCity());
         userToEdit.setCountry(user.getCountry());
         userToEdit.setId(user.getId());
-        userToEdit.setRoles(user.getRoles());
-        userToEdit.setCreated(user.getCreated());
         userToEdit.setPassword("");
 
         model.addAttribute("user", userToEdit);
@@ -124,6 +122,7 @@ public class UserController {
         editedUser.setRoles(user.getRoles());
         editedUser.setCreated(user.getCreated());
         editedUser.setDeleted(user.getDeleted());
+        editedUser.setTrips(user.getTrips());
 
         if (userService.checkPassword(editedUser.getPassword(), user.getPassword())) {
             editedUser.setPassword(user.getPassword());
@@ -174,7 +173,6 @@ public class UserController {
     @GetMapping("/app/user/delete")
     public String deleteUser(@AuthenticationPrincipal CurrentUser currentUser){
         User user = currentUser.getUser();
-        user.setRoles(null);
         userService.deleteUser(user);
         SecurityContextHolder.getContext().setAuthentication(null);
         return "redirect:/home";
