@@ -99,4 +99,10 @@ public class UserServiceImpl implements UserService {
     public Boolean checkPassword(String rawPass, String encodedPass){
         return passwordEncoder.matches(rawPass,encodedPass);
     }
+
+    @Override
+    public String encodePass(String passToEncode) {
+        return passwordEncoder.encode(passToEncode);
+    }
+
 }

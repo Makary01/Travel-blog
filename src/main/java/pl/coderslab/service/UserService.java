@@ -16,4 +16,6 @@ public interface UserService {
     User findById(Long id) throws NotFoundException;
 
     Boolean checkPassword(String rawPass, String encodedPass);
+
+    String encodePass(String passToEncode);
 }

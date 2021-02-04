@@ -17,6 +17,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,7 +25,6 @@ public class User {
     @Size(min = 5,max = 20,message = "Username must contain {min} to {max} charters")
     private String username;
 
-    @Size(min = 5, max = 60,message = "Password must contain {min} to {max} charters")
     @NotNull(message = "Enter password")
     private String password;
 
