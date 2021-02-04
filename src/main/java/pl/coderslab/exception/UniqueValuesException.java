@@ -1,7 +1,15 @@
 package pl.coderslab.exception;
 
 public class UniqueValuesException extends Exception{
-    public UniqueValuesException(String message){
+
+    private String objectName;
+
+    public UniqueValuesException(String objectName, String message ){
         super(message);
+        this.objectName = objectName;
+    }
+
+    public String getObjectName() {
+        return objectName;
     }
 }

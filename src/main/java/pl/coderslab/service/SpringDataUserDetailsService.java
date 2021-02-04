@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.coderslab.entity.User;
+import pl.coderslab.repositories.UserRepository;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,10 +15,12 @@ import java.util.Set;
 public class SpringDataUserDetailsService implements UserDetailsService {
 
     private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public void setUserRepository(UserService userService) {
+    public void setUserRepository(UserService userService,UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,6 +38,6 @@ public class SpringDataUserDetailsService implements UserDetailsService {
 
         //RETURNING CURRENT USER
         return new CurrentUser(user.getUsername(),user.getPassword(),
-                grantedAuthorities, user);
+                grantedAuthorities, user, userRepository);
     }
 }

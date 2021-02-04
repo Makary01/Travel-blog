@@ -2,6 +2,7 @@ package pl.coderslab.entity;
 
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -9,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,10 +31,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @Range(min = 0L, max = 1L)
     private Integer enabled;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Trip> trips;
 
     @Column(unique = true)
     @Email(message = "Enter valid email")
