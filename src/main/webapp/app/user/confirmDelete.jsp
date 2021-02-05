@@ -9,7 +9,9 @@
 <body>
 
 <h1>Are you sure that you want to delete your account permanently?</h1>
-<a href="/app/dashboard">Back to home page</a>
+<a href="/app/dashboard">Back to home page</a><br>
+<button onclick="goBack()">Go Back</button>
+<script>function goBack() {window.history.back();}</script>
 <form:form method="POST"
            action="/app/user/delete-account">
     <input type="submit" value="Delete account">

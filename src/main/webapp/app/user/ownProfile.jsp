@@ -7,7 +7,9 @@
 </head>
 <body>
 
-<a href="/app/dashboard">Back to home page</a>
+<a href="/app/dashboard">Back to home page</a><br>
+<button onclick="goBack()">Go Back</button>
+<script>function goBack() {window.history.back();}</script>
 
 <h1>My profile</h1>
 

@@ -9,7 +9,9 @@
 <body>
 
 <h1>Edit profile</h1>
-<a href="/app/dashboard">Back to home page</a>
+<a href="/app/dashboard">Back to home page</a><br>
+<button onclick="goBack()">Go Back</button>
+<script>function goBack() {window.history.back();}</script>
 <form:form method="POST"
            modelAttribute="user"
            action="/app/user/edit">

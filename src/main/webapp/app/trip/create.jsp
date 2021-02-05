@@ -7,6 +7,10 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+<a href="/app/dashboard">Back to home page</a><br>
+<button onclick="goBack()">Go Back</button>
+<script>function goBack() {window.history.back();}</script>
+
 <form:form method="POST"
            modelAttribute="trip"
            action="/app/trip/add">
