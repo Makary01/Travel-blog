@@ -35,21 +35,15 @@ public class TripController {
     }
 
 
-
+    //============================================
+    //          CREATE TRIP
+    //============================================
     @GetMapping("/add")
     public String createTripForm(Model model) {
         model.addAttribute("trip", new Trip());
         model.addAttribute("types", types);
         return "app/trip/create";
     }
-
-    @GetMapping("")
-    public String readAll(Model model,@AuthenticationPrincipal CurrentUser currentUser){
-        model.addAttribute("trips",tripService.findAllByUserOnlyIdAndTitle(currentUser.getUser()));
-        return "app/trip/manageTrips";
-    }
-
-
     @PostMapping("/add")
     public String createTripAction(@ModelAttribute @Valid Trip trip, BindingResult result,
                                    @AuthenticationPrincipal CurrentUser currentUser, Model model) {
@@ -76,7 +70,19 @@ public class TripController {
 
     }
 
+    //============================================
+    //          READ ALL TRIP
+    //============================================
+    @GetMapping("")
+    public String readAll(Model model,@AuthenticationPrincipal CurrentUser currentUser){
+        model.addAttribute("trips",tripService.findAllByUserOnlyIdAndTitle(currentUser.getUser()));
+        return "app/trip/manageTrips";
+    }
 
+
+    //============================================
+    //          READ SINGLE TRIP
+    //============================================
     @GetMapping("/{id:\\d+}")
     public String read(@PathVariable Long id, HttpServletResponse response,
                        @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
@@ -93,6 +99,10 @@ public class TripController {
         return "app/trip/preview";
     }
 
+
+    //============================================
+    //          EDIT TRIP
+    //============================================
     @GetMapping("/edit/{id:\\d+}")
     public String editForm(@PathVariable Long id, HttpServletResponse response,
                            @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
@@ -110,7 +120,6 @@ public class TripController {
         }
         return "app/trip/edit";
     }
-
     @PostMapping("/edit/{id:\\d+}")
     public String editAction(@PathVariable Long id, HttpServletResponse response,
                              @ModelAttribute("trip") @Valid Trip tripEdited, BindingResult result,
@@ -142,7 +151,9 @@ public class TripController {
         return "app/trip/edit";
     }
 
-
+    //============================================
+    //          DELETE TRIP
+    //============================================
     @GetMapping("/delete/{id:\\d+}")
     public String deleteForm(@PathVariable Long id, HttpServletResponse response,
                              @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
@@ -160,7 +171,6 @@ public class TripController {
         }
         return "app/trip/confirmDelete";
     }
-
     @PostMapping("/delete/{id:\\d+}")
     public String deleteAction(@PathVariable Long id, HttpServletResponse response,
                              @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {

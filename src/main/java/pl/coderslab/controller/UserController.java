@@ -77,7 +77,6 @@ public class UserController {
 
         return "app/user/edit";
     }
-
     @PostMapping("/edit")
     public String updateAction(@AuthenticationPrincipal CurrentUser currentUser,
                                @ModelAttribute("user") @Valid User modelUser, BindingResult result) {
@@ -111,7 +110,6 @@ public class UserController {
         model.addAttribute("passwordChanger", new PasswordChanger());
         return "app/user/changePassword";
     }
-
     @PostMapping("/change-password")
     public String changePasswordAction(@AuthenticationPrincipal CurrentUser currentUser,
                                        @ModelAttribute PasswordChanger passwordChanger, BindingResult result) {
@@ -134,7 +132,6 @@ public class UserController {
     public String deleteUserForm() {
         return "app/user/confirmDelete";
     }
-
     @PostMapping("/delete-account")
     public String deleteUserAction(@AuthenticationPrincipal CurrentUser currentUser) {
         User user = currentUser.getUser();

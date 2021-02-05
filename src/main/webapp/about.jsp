@@ -7,10 +7,8 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Welcome in trip blog!</h1>
-<a href="/app/dashboard">Log in</a>
-<a href="/register">Register</a>
-<a href="/about">About app</a>
+<h1>About..</h1>
+
 </div>
 </body>
 </html>

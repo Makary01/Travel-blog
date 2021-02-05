@@ -34,6 +34,14 @@ public class HomeController {
     }
 
     //============================================
+    //          ABOUT APP PAGE
+    //============================================
+    @GetMapping("/about")
+    public String about(@AuthenticationPrincipal CurrentUser currentUser){
+        return isLoggedId(currentUser) ? "redirect:/app/dashboard" : "about";
+    }
+
+    //============================================
     //          REGISTRATION
     //============================================
     @GetMapping("/register")

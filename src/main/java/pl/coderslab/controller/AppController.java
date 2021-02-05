@@ -12,6 +12,9 @@ import pl.coderslab.utils.CurrentUser;
 @RequestMapping("/app")
 public class AppController {
 
+    //============================================
+    //          APP DASHBOARD
+    //============================================
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal CurrentUser currentUser, Model model){
         User user = currentUser.getUser();
