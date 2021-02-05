@@ -18,4 +18,6 @@ public interface TripService {
     Trip saveNewTrip(Trip trip) throws UniqueValuesException;
 
     Trip saveEditedTrip(Trip trip) throws UniqueValuesException;
+
+    void delete(Trip trip);
 }

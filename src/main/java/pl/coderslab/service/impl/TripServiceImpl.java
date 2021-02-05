@@ -67,4 +67,9 @@ public class TripServiceImpl implements TripService {
         }
         return tripRepository.save(trip);
     }
+
+    @Override
+    public void delete(Trip trip) {
+        tripRepository.delete(trip);
+    }
 }

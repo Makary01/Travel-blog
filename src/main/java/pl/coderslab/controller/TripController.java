@@ -49,7 +49,7 @@ public class TripController {
 
 
     @GetMapping("/add")
-    public String createTrip(Model model) {
+    public String createTripForm(Model model) {
         model.addAttribute("trip", new Trip());
         model.addAttribute("types", types);
         return "app/trip/create";
@@ -145,6 +145,42 @@ public class TripController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         return "app/trip/edit";
+    }
+
+
+    @GetMapping("/delete/{id:\\d+}")
+    public String deleteForm(@PathVariable Long id, HttpServletResponse response,
+                             @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+        try {
+            Trip trip = tripService.findById(id);
+            if (trip.getUser().getId() == currentUser.getUser().getId()) {
+                model.addAttribute("id",id);
+                model.addAttribute("title",trip.getTitle());
+                return "app/trip/confirmDelete";
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            }
+        } catch (NotFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return "app/trip/confirmDelete";
+    }
+
+    @PostMapping("/delete/{id:\\d+}")
+    public String deleteAction(@PathVariable Long id, HttpServletResponse response,
+                             @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+        try {
+            Trip trip = tripService.findById(id);
+            if (trip.getUser().getId() == currentUser.getUser().getId()) {
+                tripService.delete(trip);
+                return "redirect:/app/dashboard";
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            }
+        } catch (NotFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return "app/trip/confirmDelete";
     }
 
 }
