@@ -41,6 +41,7 @@ public class UserController {
     @GetMapping("")
     public String readSelf(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         User user = currentUser.getUser();
+        userService.loadLast5Trips(user);
         model.addAttribute(user);
         return "app/user/ownProfile";
     }
@@ -58,6 +59,7 @@ public class UserController {
         if(currentUser.getUser().getId()==id) return "redirect:/app/user";
         try {
             User user = userService.findById(id);
+            userService.loadLast5Trips(user);
             model.addAttribute(user);
         } catch (NotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,7 +38,7 @@ public class User {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<Trip> trips;
+    private List<Trip> trips;
 
     @Email(message = "Enter valid email")
     @Size(min=5, max = 254, message = "Email must contain {min} to {max} charters")
@@ -61,7 +62,7 @@ public class User {
         return roles;
     }
 
-    public Set<Trip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
 }

@@ -17,12 +17,12 @@
     <p>From: ${user.city},${user.country}</p>
     <p>Email: ${user.email}</p>
 
-<%--    User's trips:--%>
-<%--    <ul>--%>
-<%--        <c:forEach items="${user.trips}" var="trip">--%>
-<%--            <li><a href="/app/adventure?id=${trip.id}">${trip.title}</a>|${trip.type}</li>--%>
-<%--        </c:forEach>--%>
-<%--    </ul>--%>
+    My latest trips:
+    <ul>
+        <c:forEach items="${user.trips}" var="trip">
+            <li><a href="/app/trip/${trip.id}">${trip.title}</a>|${trip.type}</li>
+        </c:forEach>
+    </ul>
 </div>
 <a href="/app/user/edit">Edit profile</a>
 <a href="/app/user/change-password">Change password</a>

@@ -20,4 +20,8 @@ public interface UserService {
     String encodePass(String passToEncode);
 
     void deleteUser(User user);
+
+    void loadAllTrips(User user);
+
+    void loadLast5Trips(User user);
 }

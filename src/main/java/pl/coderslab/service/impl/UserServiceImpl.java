@@ -8,15 +8,11 @@ import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.repositories.RoleRepository;
 import pl.coderslab.repositories.UserRepository;
-import pl.coderslab.service.CurrentUser;
+import pl.coderslab.service.TripService;
 import pl.coderslab.service.UserService;
 
-import javax.swing.text.html.Option;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -25,11 +21,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final TripService tripService;
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder, TripService tripService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.tripService = tripService;
     }
 
     @Override
@@ -105,6 +103,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public void loadAllTrips(User user) {
+        user.setTrips(tripService.findAllByUser(user));
+    }
+
+    @Override
+    public void loadLast5Trips(User user) {
+        user.setTrips(tripService.findLatest5ByUser(user));
     }
 
 }
