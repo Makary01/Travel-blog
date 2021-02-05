@@ -73,9 +73,6 @@ public class UserController {
         userToEdit.setEmail(user.getEmail());
         userToEdit.setCity(user.getCity());
         userToEdit.setCountry(user.getCountry());
-        userToEdit.setId(user.getId());
-        userToEdit.setPassword("");
-
         model.addAttribute("user", userToEdit);
 
         return "app/user/edit";
@@ -83,22 +80,23 @@ public class UserController {
 
     @PostMapping("/edit")
     public String updateAction(@AuthenticationPrincipal CurrentUser currentUser,
-                               @ModelAttribute("user") @Valid User editedUser, BindingResult result) {
+                               @ModelAttribute("user") @Valid User modelUser, BindingResult result) {
         if (result.hasErrors()) return "app/user/edit";
         User user = currentUser.getUser();
-        editedUser.setId(user.getId());
-        editedUser.setRoles(user.getRoles());
-        editedUser.setCreated(user.getCreated());
-        editedUser.setTrips(user.getTrips());
 
-        if (userService.checkPassword(editedUser.getPassword(), user.getPassword())) {
-            editedUser.setPassword(user.getPassword());
+        user.setUsername(modelUser.getUsername());
+        user.setEmail(modelUser.getEmail());
+        user.setCity(modelUser.getCity());
+        user.setCountry(modelUser.getCountry());
+
+        if (userService.checkPassword(modelUser.getPassword(), user.getPassword())) {
+            user.setPassword(modelUser.getPassword());
         } else {
             result.addError(new ObjectError("password", "Password incorect"));
             return "app/user/edit";
         }
         try {
-            userService.saveEditedUser(editedUser);
+            userService.saveEditedUser(user);
             return "redirect:/app/dashboard";
         } catch (UniqueValuesException e) {
             result.addError(new ObjectError(e.getObjectName(), e.getMessage()));
@@ -112,7 +110,7 @@ public class UserController {
     //============================================
     @GetMapping("/change-password")
     public String changePasswordForm(Model model) {
-        model.addAttribute("passwordChanger", new PasswordChanger("", ""));
+        model.addAttribute("passwordChanger", new PasswordChanger());
         return "app/user/changePassword";
     }
 

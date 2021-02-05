@@ -26,10 +26,10 @@ public class CurrentUser extends User {
 
     //GETTER FOR USER ENTITY
     public pl.coderslab.entity.User getUser() {
-        Optional<pl.coderslab.entity.User> entityUserOptional = userRepository.findById(user.getId());
-        if(entityUserOptional.isPresent()) {
-            user=entityUserOptional.get();
-        }
-        return user;
+//        Optional<pl.coderslab.entity.User> entityUserOptional = userRepository.findById(user.getId());
+//        if(entityUserOptional.isPresent()) {
+//            user=entityUserOptional.get();
+//        }
+        return  this.user;
     }
 }

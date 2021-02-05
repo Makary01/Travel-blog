@@ -11,13 +11,10 @@ import pl.coderslab.service.UserService;
 
 @Data
 public class PasswordChanger {
-    private String currentPassword;
-    private String newPassword;
+    private String currentPassword = "";
+    private String newPassword = "";
 
-    public PasswordChanger(String currentPassword, String newPassword) {
-        this.currentPassword = currentPassword;
-        this.newPassword = newPassword;
-    }
+
 
 
 
