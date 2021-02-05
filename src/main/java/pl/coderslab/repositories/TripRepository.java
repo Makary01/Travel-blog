@@ -5,6 +5,7 @@ import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
@@ -13,4 +14,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findFirst5ByUserOrderByCreatedDesc(User user);
 
     boolean existsByTitle(String title);
+
+    Optional<Trip> findByTitle(String title);
 }

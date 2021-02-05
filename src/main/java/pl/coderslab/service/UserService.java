@@ -7,7 +7,7 @@ import pl.coderslab.exception.UniqueValuesException;
 
 public interface UserService {
 
-    User findByUserName(String name);
+    User findByUserName(String name) throws NotFoundException;
 
     User saveNewUser(User user) throws UniqueValuesException;
 

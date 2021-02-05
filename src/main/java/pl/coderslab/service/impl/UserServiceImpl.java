@@ -31,8 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserName(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUserName(String username) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        }else{
+            throw new NotFoundException(username) ;
+        }
     }
 
     @Override
@@ -62,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveEditedUser(User user) throws UniqueValuesException {
         //CHECKING IF USERNAME IS AVAILABLE
-        Optional<User> userByUsername = Optional.ofNullable(userRepository.findByUsername(user.getUsername()));
+        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
         if(userByUsername.isPresent()){
             if(userByUsername.get().getId() != user.getId()){
                 throw new UniqueValuesException("username","Username already taken");
@@ -70,7 +75,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //CHECKING IF EMAIL IS AVAILABLE
-        Optional<User> userByEmail = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
+        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
         if(userByEmail.isPresent()){
             if(userByEmail.get().getId() != user.getId()){
                 throw new UniqueValuesException("email","Email already taken");

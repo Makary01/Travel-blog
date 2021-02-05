@@ -48,24 +48,24 @@ public class TripController {
 //    }
 
 
-
     @GetMapping("/add")
-    public String createTrip(Model model){
+    public String createTrip(Model model) {
         model.addAttribute("trip", new Trip());
-        model.addAttribute("types",types);
+        model.addAttribute("types", types);
         return "app/trip/create";
     }
+
     @PostMapping("/add")
     public String createTripAction(@ModelAttribute @Valid Trip trip, BindingResult result,
-                                   @AuthenticationPrincipal CurrentUser currentUser, Model model){
-        model.addAttribute("types",types);
+                                   @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("types", types);
         if (result.hasErrors()) return "app/trip/create";
 
-        if((trip.getEndDate()).isBefore(trip.getStartDate())){
+        if ((trip.getEndDate()).isBefore(trip.getStartDate())) {
             result.addError(new ObjectError("endDate", "You cant end journey before starting it"));
             return "app/trip/create";
         }
-        if(LocalDate.now().isBefore(trip.getEndDate())){
+        if (LocalDate.now().isBefore(trip.getEndDate())) {
             result.addError(new ObjectError("endDate", "Enter valid end date"));
             return "app/trip/create";
         }
@@ -80,7 +80,6 @@ public class TripController {
         }
 
     }
-
 
 
     @GetMapping("/{id:\\d+}")
@@ -99,5 +98,53 @@ public class TripController {
         return "app/trip/preview";
     }
 
+    @GetMapping("/edit/{id:\\d+}")
+    public String editForm(@PathVariable Long id, HttpServletResponse response,
+                           @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+        try {
+            Trip trip = tripService.findById(id);
+            model.addAttribute(trip);
+            model.addAttribute("types", types);
+            if (trip.getUser().getId() == currentUser.getUser().getId()) {
+                return "app/trip/edit";
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            }
+        } catch (NotFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return "app/trip/edit";
+    }
+
+    @PostMapping("/edit/{id:\\d+}")
+    public String editAction(@PathVariable Long id, HttpServletResponse response,
+                             @ModelAttribute("trip") @Valid Trip tripEdited, BindingResult result,
+                             @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+        model.addAttribute("types", types);
+        try {
+            Trip tripToEdit = tripService.findById(id);
+            if(!(tripToEdit.getUser().getId() == currentUser.getUser().getId())){
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            }else {
+                if (result.hasErrors()) return "app/trip/edit";
+                tripToEdit.setTitle(tripEdited.getTitle());
+                tripToEdit.setTypes(tripEdited.getTypes());
+                tripToEdit.setDestination(tripEdited.getDestination());
+                tripToEdit.setContent(tripEdited.getContent());
+                tripToEdit.setStartDate(tripEdited.getStartDate());
+                tripToEdit.setEndDate(tripEdited.getEndDate());
+                try {
+                    tripService.saveEditedTrip(tripToEdit);
+                    return "redirect:/app/dashboard";
+                } catch (UniqueValuesException e) {
+                    result.addError(new ObjectError(e.getObjectName(), e.getMessage()));
+                    return "app/trip/create";
+                }
+            }
+        } catch (NotFoundException | IOException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return "app/trip/edit";
+    }
 
 }

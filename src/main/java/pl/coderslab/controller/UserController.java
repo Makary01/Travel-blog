@@ -98,7 +98,7 @@ public class UserController {
             return "app/user/edit";
         }
         try {
-            user = userService.saveEditedUser(editedUser);
+            userService.saveEditedUser(editedUser);
             return "redirect:/app/dashboard";
         } catch (UniqueValuesException e) {
             result.addError(new ObjectError(e.getObjectName(), e.getMessage()));

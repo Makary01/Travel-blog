@@ -1,5 +1,6 @@
 package pl.coderslab.service;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +28,13 @@ public class SpringDataUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         //FINDING USER IN DATABASE
-        User user = userService.findByUserName(username);
+        User user = null;
+        try {
+            user = userService.findByUserName(username);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            //no way to be thrown
+        }
 
         //EXCEPTION IF USER NOT FOUND
         if (user == null) {throw new UsernameNotFoundException(username); }

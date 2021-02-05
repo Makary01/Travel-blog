@@ -37,8 +37,13 @@ public class PasswordChanger {
         if (currentPassword.length() < 5 || currentPassword.length() > 20) {
             result.addError(new ObjectError("currentPassword", "Current password is incorrect"));
         }
-        if(!userService.checkPassword(currentPassword, userService.findByUserName(username).getPassword())){
-            result.addError(new ObjectError("currentPassword", "Current password is incorrect"));
+        try {
+            if(!userService.checkPassword(currentPassword, userService.findByUserName(username).getPassword())){
+                result.addError(new ObjectError("currentPassword", "Current password is incorrect"));
+            }
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            //no way to get this thrown
         }
     }
 
@@ -47,6 +52,7 @@ public class PasswordChanger {
         try {
             userService.saveEditedUser(user);
         } catch (UniqueValuesException e) {
+            e.printStackTrace();
             //no unique values edited
         }
     }
