@@ -1,5 +1,6 @@
 package pl.coderslab.service;
 
+import javassist.NotFoundException;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.User;
 
@@ -11,4 +12,5 @@ public interface TripService {
 
     List<Trip> findLatest5ByUser(User user);
 
+    Trip findById(Long id) throws NotFoundException;
 }

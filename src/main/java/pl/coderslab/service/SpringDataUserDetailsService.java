@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.coderslab.entity.User;
 import pl.coderslab.repositories.UserRepository;
+import pl.coderslab.utils.CurrentUser;
 
 import java.util.HashSet;
 import java.util.Set;

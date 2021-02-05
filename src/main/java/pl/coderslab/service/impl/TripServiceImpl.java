@@ -1,5 +1,7 @@
 package pl.coderslab.service.impl;
 
+
+import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.User;
@@ -31,5 +33,16 @@ public class TripServiceImpl implements TripService {
         Optional<List<Trip>> optionalTripList =
                 Optional.ofNullable(tripRepository.findFirst5ByUserOrderByCreatedDesc(user));
         return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
+    }
+
+
+    @Override
+    public Trip findById(Long id) throws NotFoundException {
+        Optional<Trip> tripOptional = tripRepository.findById(id);
+        if(tripOptional.isPresent()){
+            return tripOptional.get();
+        }else {
+            throw new NotFoundException(id.toString());
+        }
     }
 }

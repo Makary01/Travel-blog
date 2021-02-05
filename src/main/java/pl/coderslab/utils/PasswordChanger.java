@@ -1,4 +1,4 @@
-package pl.coderslab.service;
+package pl.coderslab.utils;
 
 
 import javassist.NotFoundException;
@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
+import pl.coderslab.service.UserService;
 
 @Data
 public class PasswordChanger {

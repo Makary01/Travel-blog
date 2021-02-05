@@ -4,23 +4,20 @@ package pl.coderslab.controller;
 import javassist.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
-import pl.coderslab.service.CurrentUser;
-import pl.coderslab.service.PasswordChanger;
+import pl.coderslab.utils.CurrentUser;
+import pl.coderslab.utils.PasswordChanger;
 import pl.coderslab.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.io.IOException;
 
 
