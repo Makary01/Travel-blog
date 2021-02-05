@@ -7,10 +7,11 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Dashboard</h1>
-<a href="/app/user">Profile</a>
+<h1>Welcome ${user.username}!</h1>
+<a href="/app/user">My Profile</a>
+<a href="/app/trip">My trips</a>
+<a href="/app/trip/add">Add trip</a>
 <a href="/logout">Logout</a>
-
 </div>
 </body>
 </html>

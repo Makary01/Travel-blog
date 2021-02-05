@@ -40,12 +40,6 @@ public class TripController {
         types = typeService.findAllTypes();
     }
 
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-//        sdf.setLenient(true);
-//        binder.registerCustomEditor(LocalDate.class, new CustomDateEditor(sdf, true));
-//    }
 
 
     @GetMapping("/add")
@@ -54,6 +48,13 @@ public class TripController {
         model.addAttribute("types", types);
         return "app/trip/create";
     }
+
+    @GetMapping("")
+    public String readAll(Model model,@AuthenticationPrincipal CurrentUser currentUser){
+        model.addAttribute("trips",tripService.findLatest50ByUser(currentUser.getUser()));
+        return "app/trip/manageTrips";
+    }
+
 
     @PostMapping("/add")
     public String createTripAction(@ModelAttribute @Valid Trip trip, BindingResult result,

@@ -9,23 +9,25 @@
 
 <a href="/app/dashboard">Back to home page</a>
 
-<h1>My profile</h1>
+<h1>My trips</h1>
 
-<div id="container">
-    <p>User nr ${user.id}</p>
-    <p>Username: ${user.username}</p>
-    <p>From: ${user.city},${user.country}</p>
-    <p>Email: ${user.email}</p>
+<table>
+    <c:forEach items="${trips}" var="trip">
+        <td>
+            <td>
+        <a href="/app/trip/${trip.id}">${trip.title}</a>
+    </td>
+            <td>
+                <a href="/app/trip/${trip.id}">View</a>
+                <a href="/app/trip/edit/${trip.id}">Edit</a>
+                <a href="/app/trip/delete/${trip.id}">Delete</a>
+            </td>
 
-    My latest trips:
-    <ul>
-        <c:forEach items="${user.trips}" var="trip">
-            <li><a href="/app/trip/${trip.id}">${trip.title}</a>|
-                <c:forEach items="${trip.types}" var="type">
-                    ${type.name}
-                </c:forEach></li>
+        </tr>
         </c:forEach>
-    </ul>
+</table>
+
+
 </div>
 <a href="/app/user/edit">Edit profile</a>
 <a href="/app/user/change-password">Change password</a>

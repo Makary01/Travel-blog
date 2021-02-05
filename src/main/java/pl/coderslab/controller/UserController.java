@@ -89,9 +89,7 @@ public class UserController {
         user.setCity(modelUser.getCity());
         user.setCountry(modelUser.getCountry());
 
-        if (userService.checkPassword(modelUser.getPassword(), user.getPassword())) {
-            user.setPassword(modelUser.getPassword());
-        } else {
+        if (!userService.checkPassword(modelUser.getPassword(), user.getPassword())) {
             result.addError(new ObjectError("password", "Password incorect"));
             return "app/user/edit";
         }

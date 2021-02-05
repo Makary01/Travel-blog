@@ -1,5 +1,6 @@
 package pl.coderslab.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.service.UserService;
+import pl.coderslab.utils.CurrentUser;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -25,17 +28,17 @@ public class HomeController {
     //============================================
     //          WELCOME PAGE
     //============================================
-    @GetMapping({"/home",""})
-    public String home(){
-
-        return"home";
+    @GetMapping({"/home","/*"})
+    public String home(@AuthenticationPrincipal CurrentUser currentUser){
+        return isLoggedId(currentUser) ? "redirect:/app/dashboard" : "home";
     }
 
     //============================================
     //          REGISTRATION
     //============================================
     @GetMapping("/register")
-    public String registerForm(Model model) {
+    public String registerForm(Model model,@AuthenticationPrincipal CurrentUser currentUser) {
+        if(isLoggedId(currentUser)) return  "redirect:/app/dashboard";
         model.addAttribute("user", new User());
         return "register";
     }
@@ -55,4 +58,13 @@ public class HomeController {
         }
     }
 
+
+    private Boolean isLoggedId(CurrentUser currentUser){
+        Optional<CurrentUser> currentUserOptional = Optional.ofNullable(currentUser);
+        if(currentUserOptional.isPresent()){
+            Optional<User> userOptional = Optional.ofNullable(currentUserOptional.get().getUser());
+            return userOptional.isPresent();
+        }
+        return false;
+    }
 }

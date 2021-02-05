@@ -24,9 +24,10 @@ public class TripServiceImpl implements TripService {
         this.tripRepository = tripRepository;
     }
 
+
     @Override
-    public List<Trip> findAllByUser(User user) {
-        Optional<List<Trip>> optionalTripList = Optional.ofNullable(tripRepository.findAllByUser(user));
+    public List<Trip> findLatest50ByUser(User user) {
+        Optional<List<Trip>> optionalTripList = Optional.ofNullable(tripRepository.findFirst50ByUserOrderByCreatedDesc(user));
         return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
     }
 
@@ -72,4 +73,5 @@ public class TripServiceImpl implements TripService {
     public void delete(Trip trip) {
         tripRepository.delete(trip);
     }
+
 }

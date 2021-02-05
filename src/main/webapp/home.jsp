@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Welcome in trip blog!</h1>
-<a href="/login">Log in!</a>
+<a href="/app/dashboard">Log in!</a>
 <a href="/register">Register!</a>
 </div>
 </body>

@@ -16,4 +16,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     boolean existsByTitle(String title);
 
     Optional<Trip> findByTitle(String title);
+
+    List<Trip> findFirst50ByUserOrderByCreatedDesc(User user);
 }

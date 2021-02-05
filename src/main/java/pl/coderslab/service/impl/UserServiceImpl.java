@@ -111,11 +111,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loadAllTrips(User user) {
-        user.setTrips(tripService.findAllByUser(user));
-    }
-
-    @Override
     public void loadLast5Trips(User user) {
         user.setTrips(tripService.findLatest5ByUser(user));
     }
