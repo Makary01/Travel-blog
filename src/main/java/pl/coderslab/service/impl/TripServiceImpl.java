@@ -8,7 +8,7 @@ import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.repositories.TripRepository;
 import pl.coderslab.service.TripService;
-import pl.coderslab.utils.SimpleTrip;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.User;
-import pl.coderslab.utils.SimpleTrip;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,5 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     @Query("SELECT t.title FROM Trip t WHERE t.user = (:user)")
     List<String> findAllByUserOrderByCreatedDescOnlyTitle(User user);
-
-
 
 }
