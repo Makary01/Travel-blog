@@ -44,16 +44,13 @@ public class UserController {
     }
 
 
-
-
-
     //============================================
     //          READ SELECTED USER
     //============================================
     @GetMapping("/{id:\\d+}")
     public String readSelected(@PathVariable Long id, HttpServletResponse response,
                                @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
-        if(currentUser.getUser().getId()==id) return "redirect:/app/user";
+        if (currentUser.getUser().getId() == id) return "redirect:/app/user";
         try {
             User user = userService.findById(id);
             userService.loadLast5Trips(user);
@@ -63,9 +60,6 @@ public class UserController {
         }
         return "app/user/selectedProfile";
     }
-
-
-
 
 
     //============================================
@@ -86,6 +80,7 @@ public class UserController {
 
         return "app/user/edit";
     }
+
     @PostMapping("/edit")
     public String updateAction(@AuthenticationPrincipal CurrentUser currentUser,
                                @ModelAttribute("user") @Valid User editedUser, BindingResult result) {
@@ -112,50 +107,46 @@ public class UserController {
     }
 
 
-
-
-
     //============================================
     //          CHANGE PASSWORD
     //============================================
     @GetMapping("/change-password")
     public String changePasswordForm(Model model) {
-        model.addAttribute("passwordChanger", new PasswordChanger("",""));
+        model.addAttribute("passwordChanger", new PasswordChanger("", ""));
         return "app/user/changePassword";
     }
+
     @PostMapping("/change-password")
     public String changePasswordAction(@AuthenticationPrincipal CurrentUser currentUser,
                                        @ModelAttribute PasswordChanger passwordChanger, BindingResult result) {
         User user = currentUser.getUser();
-        passwordChanger.validatePasswords(result,user.getUsername(),userService);
-        if(result.hasErrors()){
+        passwordChanger.validatePasswords(result, user.getUsername(), userService);
+        if (result.hasErrors()) {
             return "app/user/changePassword";
-        }else {
-            passwordChanger.saveNewPassword(user,userService);
+        } else {
+            passwordChanger.saveNewPassword(user, userService);
             return "redirect:/app/dashboard";
         }
 
     }
 
 
-
-
     //============================================
     //          DELETE USER
     //============================================
     @GetMapping("/delete-account")
-    public String deleteUserForm(){
+    public String deleteUserForm() {
         return "app/user/confirmDelete";
     }
+
     @PostMapping("/delete-account")
-    public String deleteUserAction(@AuthenticationPrincipal CurrentUser currentUser){
+    public String deleteUserAction(@AuthenticationPrincipal CurrentUser currentUser) {
         User user = currentUser.getUser();
         userService.deleteUser(user);
         SecurityContextHolder.getContext().setAuthentication(null);
         return "redirect:/home";
 
     }
-
 
 
 }

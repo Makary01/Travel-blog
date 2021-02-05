@@ -20,7 +20,10 @@
     My latest trips:
     <ul>
         <c:forEach items="${user.trips}" var="trip">
-            <li><a href="/app/trip/${trip.id}">${trip.title}</a>|${trip.type}</li>
+            <li><a href="/app/trip/${trip.id}">${trip.title}</a>|
+                <c:forEach items="${trip.types}" var="type">
+                    ${type}
+                </c:forEach></li>
         </c:forEach>
     </ul>
 </div>
