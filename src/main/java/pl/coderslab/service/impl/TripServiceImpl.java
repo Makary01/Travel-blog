@@ -8,12 +8,15 @@ import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.repositories.TripRepository;
 import pl.coderslab.service.TripService;
+import pl.coderslab.utils.SimpleTrip;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -24,17 +27,26 @@ public class TripServiceImpl implements TripService {
         this.tripRepository = tripRepository;
     }
 
-
     @Override
-    public List<Trip> findLatest50ByUser(User user) {
-        Optional<List<Trip>> optionalTripList = Optional.ofNullable(tripRepository.findFirst50ByUserOrderByCreatedDesc(user));
-        return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
+    public Map<Long, String> findAllByUserOnlyIdAndTitle(User user) {
+        List<Long> tripIdList;
+        List<String> tripTitleList;
+        Optional<List<Long>> optionalTripIdList = Optional.ofNullable(tripRepository.findAllByUserOrderByCreatedDescOnlyId(user));
+        if(optionalTripIdList.isPresent()){
+            tripIdList = optionalTripIdList.get();
+            tripTitleList = tripRepository.findAllByUserOrderByCreatedDescOnlyTitle(user);
+            return zipToMap(tripIdList,tripTitleList);
+        }
+
+
+        //        return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
+        return null;
     }
 
     @Override
-    public List<Trip> findLatest5ByUser(User user) {
+    public List<Trip> findLatest10ByUser(User user) {
         Optional<List<Trip>> optionalTripList =
-                Optional.ofNullable(tripRepository.findFirst5ByUserOrderByCreatedDesc(user));
+                Optional.ofNullable(tripRepository.findFirst10ByUserOrderByCreatedDesc(user));
         return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
     }
 
@@ -72,6 +84,11 @@ public class TripServiceImpl implements TripService {
     @Override
     public void delete(Trip trip) {
         tripRepository.delete(trip);
+    }
+
+    private <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {
+        return IntStream.range(0, keys.size()).boxed()
+                .collect(Collectors.toMap(keys::get, values::get));
     }
 
 }

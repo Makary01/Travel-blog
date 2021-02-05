@@ -15,14 +15,13 @@
     <c:forEach items="${trips}" var="trip">
         <td>
             <td>
-        <a href="/app/trip/${trip.id}">${trip.title}</a>
+        <a href="/app/trip/${trip.key}">${trip.value}</a>
     </td>
             <td>
-                <a href="/app/trip/${trip.id}">View</a>
-                <a href="/app/trip/edit/${trip.id}">Edit</a>
-                <a href="/app/trip/delete/${trip.id}">Delete</a>
+                <a href="/app/trip/${trip.key}">View</a>
+                <a href="/app/trip/edit/${trip.key}">Edit</a>
+                <a href="/app/trip/delete/${trip.key}">Delete</a>
             </td>
-
         </tr>
         </c:forEach>
 </table>

@@ -1,18 +1,14 @@
 package pl.coderslab.controller;
 
 import javassist.NotFoundException;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.Type;
-import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.service.TripService;
 import pl.coderslab.service.TypeService;
@@ -21,9 +17,7 @@ import pl.coderslab.utils.CurrentUser;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -51,7 +45,7 @@ public class TripController {
 
     @GetMapping("")
     public String readAll(Model model,@AuthenticationPrincipal CurrentUser currentUser){
-        model.addAttribute("trips",tripService.findLatest50ByUser(currentUser.getUser()));
+        model.addAttribute("trips",tripService.findAllByUserOnlyIdAndTitle(currentUser.getUser()));
         return "app/trip/manageTrips";
     }
 
