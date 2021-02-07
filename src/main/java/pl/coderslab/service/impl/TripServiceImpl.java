@@ -2,8 +2,11 @@ package pl.coderslab.service.impl;
 
 
 import javassist.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Trip;
+import pl.coderslab.entity.Type;
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
 import pl.coderslab.repositories.TripRepository;
@@ -11,10 +14,7 @@ import pl.coderslab.service.TripService;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,22 +25,6 @@ public class TripServiceImpl implements TripService {
 
     public TripServiceImpl(TripRepository tripRepository) {
         this.tripRepository = tripRepository;
-    }
-
-    @Override
-    public Map<Long, String> findAllByUserOnlyIdAndTitle(User user) {
-        List<Long> tripIdList;
-        List<String> tripTitleList;
-        Optional<List<Long>> optionalTripIdList = Optional.ofNullable(tripRepository.findAllByUserOrderByCreatedDescOnlyId(user));
-        if(optionalTripIdList.isPresent()){
-            tripIdList = optionalTripIdList.get();
-            tripTitleList = tripRepository.findAllByUserOrderByCreatedDescOnlyTitle(user);
-            return zipToMap(tripIdList,tripTitleList);
-        }
-
-
-        //        return optionalTripList.isPresent() ? optionalTripList.get() : new ArrayList<Trip>();
-        return null;
     }
 
     @Override
@@ -73,7 +57,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public Trip saveEditedTrip(Trip trip) throws UniqueValuesException {
         Optional<Trip> tripByTitleOpt = tripRepository.findByTitle(trip.getTitle());
-        if(tripByTitleOpt.isPresent()){
+        if (tripByTitleOpt.isPresent()) {
             if (tripByTitleOpt.get().getUser().getId() != trip.getId()) {
                 throw new UniqueValuesException("title", "Title already taken");
             }
@@ -84,6 +68,11 @@ public class TripServiceImpl implements TripService {
     @Override
     public void delete(Trip trip) {
         tripRepository.delete(trip);
+    }
+
+    @Override
+    public Page<Trip> findPageByUserAndTypesOrderByX(User user, Set<Type> types, Pageable pageable ) {
+        return tripRepository.findDistinctByUserAndTypesIn(user, types, pageable);
     }
 
     private <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {

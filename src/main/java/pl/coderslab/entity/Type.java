@@ -18,4 +18,13 @@ public class Type {
 
     @NotNull
     private String name;
+
+    public Type(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Type() {
+
+    }
 }

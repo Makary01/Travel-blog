@@ -1,6 +1,10 @@
 package pl.coderslab.controller;
 
 import javassist.NotFoundException;
+import org.hibernate.mapping.Array;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/app/trip")
@@ -26,12 +33,12 @@ public class TripController {
 
     private final TripService tripService;
     private final TypeService typeService;
-    private List<Type> types;
+    private Set<Type> types;
 
     public TripController(TripService tripService, TypeService typeService) {
         this.tripService = tripService;
         this.typeService = typeService;
-        types = typeService.findAllTypes();
+        types = typeService.findAllSet();
     }
 
 
@@ -44,6 +51,7 @@ public class TripController {
         model.addAttribute("types", types);
         return "app/trip/create";
     }
+
     @PostMapping("/add")
     public String createTripAction(@ModelAttribute @Valid Trip trip, BindingResult result,
                                    @AuthenticationPrincipal CurrentUser currentUser, Model model) {
@@ -71,11 +79,66 @@ public class TripController {
     }
 
     //============================================
-    //          READ ALL TRIP
+    //          READ ALL USER'S TRIPS
     //============================================
     @GetMapping("")
-    public String readAll(Model model,@AuthenticationPrincipal CurrentUser currentUser){
-        model.addAttribute("trips",tripService.findAllByUserOnlyIdAndTitle(currentUser.getUser()));
+    public String readAll(Model model, @AuthenticationPrincipal CurrentUser currentUser,
+                          @RequestParam(name = "page", defaultValue = "0") String page, @RequestParam(name = "orderBy", defaultValue = "created") String orderBy,
+                          @RequestParam(name = "order", defaultValue = "desc") String order, @RequestParam(name = "types", defaultValue = "") String requestedTypes) {
+        //assigning page number
+        Integer pageNumber;
+        try {
+            pageNumber = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            pageNumber = 0;
+        }
+
+        //assigning orderBy property
+        if (!(orderBy.equals("id") || orderBy.equals("created") || orderBy.equals("title") || orderBy.equals("startDate") || orderBy.equals("endDate"))) {
+            orderBy = "created";
+        }
+
+        //assigning requested types
+        String[] typesStringArray = requestedTypes.split(",");
+        Set<Long> typeIdsSet = new HashSet<>();
+        for (String typeAsString : typesStringArray) {
+            try{
+                typeIdsSet.add(Long.parseLong(typeAsString));
+            }catch (NumberFormatException e){}
+        }
+        Set<Type> requestedTypesSet = typeService.findByIdIn(typeIdsSet);
+        if(requestedTypesSet.size() < 1){
+            requestedTypesSet = types;
+        }
+
+        //getting trip page based on order
+        Page<Trip> tripPage;
+        if (order.equals("asc")) {
+            tripPage = tripService.findPageByUserAndTypesOrderByX(currentUser.getUser(), requestedTypesSet,
+                    PageRequest.of(pageNumber, 20, Sort.by(orderBy).ascending()));
+        } else {
+            tripPage = tripService.findPageByUserAndTypesOrderByX(currentUser.getUser(), requestedTypesSet,
+                    PageRequest.of(pageNumber, 20, Sort.by(orderBy).descending()));
+        }
+
+        //if page number is invalid
+        if (pageNumber > tripPage.getTotalPages()) {
+            pageNumber = 0;
+            if (order.equals("asc")) {
+                tripPage = tripService.findPageByUserAndTypesOrderByX(currentUser.getUser(), requestedTypesSet,
+                        PageRequest.of(pageNumber, 20, Sort.by(orderBy).ascending()));
+            } else {
+                tripPage = tripService.findPageByUserAndTypesOrderByX(currentUser.getUser(), requestedTypesSet,
+                        PageRequest.of(pageNumber, 20, Sort.by(orderBy).descending()));
+            }
+        }
+
+        System.out.println(tripPage.getContent());
+
+        model.addAttribute("allTypes",types);
+        model.addAttribute("trips", tripPage.getContent());
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", tripPage.getTotalPages());
         return "app/trip/manageTrips";
     }
 
@@ -120,6 +183,7 @@ public class TripController {
         }
         return "app/trip/edit";
     }
+
     @PostMapping("/edit/{id:\\d+}")
     public String editAction(@PathVariable Long id, HttpServletResponse response,
                              @ModelAttribute("trip") @Valid Trip tripEdited, BindingResult result,
@@ -127,9 +191,9 @@ public class TripController {
         model.addAttribute("types", types);
         try {
             Trip tripToEdit = tripService.findById(id);
-            if(!(tripToEdit.getUser().getId() == currentUser.getUser().getId())){
+            if (!(tripToEdit.getUser().getId() == currentUser.getUser().getId())) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            }else {
+            } else {
                 if (result.hasErrors()) return "app/trip/edit";
                 tripToEdit.setTitle(tripEdited.getTitle());
                 tripToEdit.setTypes(tripEdited.getTypes());
@@ -160,8 +224,8 @@ public class TripController {
         try {
             Trip trip = tripService.findById(id);
             if (trip.getUser().getId() == currentUser.getUser().getId()) {
-                model.addAttribute("id",id);
-                model.addAttribute("title",trip.getTitle());
+                model.addAttribute("id", id);
+                model.addAttribute("title", trip.getTitle());
                 return "app/trip/confirmDelete";
             } else {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -171,9 +235,10 @@ public class TripController {
         }
         return "app/trip/confirmDelete";
     }
+
     @PostMapping("/delete/{id:\\d+}")
     public String deleteAction(@PathVariable Long id, HttpServletResponse response,
-                             @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+                               @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
         try {
             Trip trip = tripService.findById(id);
             if (trip.getUser().getId() == currentUser.getUser().getId()) {

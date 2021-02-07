@@ -19,6 +19,13 @@ public class AppController {
     public String dashboard(@AuthenticationPrincipal CurrentUser currentUser, Model model){
         User user = currentUser.getUser();
         model.addAttribute(user);
+
+
+
+
+
+
+
         return "app/dashboard";
     }
 
