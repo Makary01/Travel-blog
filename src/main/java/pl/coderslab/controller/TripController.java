@@ -94,7 +94,7 @@ public class TripController {
         }
 
         //assigning orderBy property
-        if (!(orderBy.equals("id") || orderBy.equals("created") || orderBy.equals("title") || orderBy.equals("startDate") || orderBy.equals("endDate"))) {
+        if (!(orderBy.equals("created") || orderBy.equals("title") || orderBy.equals("startDate") || orderBy.equals("endDate"))) {
             orderBy = "created";
         }
 
@@ -133,11 +133,9 @@ public class TripController {
             }
         }
 
-        System.out.println(tripPage.getContent());
-
         model.addAttribute("allTypes",types);
         model.addAttribute("trips", tripPage.getContent());
-        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("currentPage", pageNumber+1);
         model.addAttribute("totalPages", tripPage.getTotalPages());
         return "app/trip/manageTrips";
     }

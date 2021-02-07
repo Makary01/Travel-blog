@@ -21,5 +21,5 @@ public interface UserService {
 
     void deleteUser(User user);
 
-    void loadLast5Trips(User user);
+    void loadLast10Trips(User user);
 }

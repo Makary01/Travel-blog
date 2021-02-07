@@ -1,22 +1,12 @@
-let sortByIdButton = document.getElementById("sortById")
-let sortByCreatedButton = document.getElementById("sortByCreated")
-let sortByTitleButton = document.getElementById("sortByTitle")
-let sortByStartDateButton = document.getElementById("sortByStartDate")
-let sortByEndDateButton = document.getElementById("sortByEndDate")
-let orderAsc = document.getElementById("orderAsc")
-let orderDesc = document.getElementById("orderDesc")
-
-
-
 function insertParam(key, value) {
     key = encodeURIComponent(key);
     value = encodeURIComponent(value);
 
     // kvp looks like ['key1=value1', 'key2=value2', ...]
     let kvp = document.location.search.substr(1).split('&');
-    let i=0;
+    let i = 0;
 
-    for(; i<kvp.length; i++){
+    for (; i < kvp.length; i++) {
         if (kvp[i].startsWith(key + '=')) {
             let pair = kvp[i].split('=');
             pair[1] = value;
@@ -25,8 +15,8 @@ function insertParam(key, value) {
         }
     }
 
-    if(i >= kvp.length){
-        kvp[kvp.length] = [key,value].join('=');
+    if (i >= kvp.length) {
+        kvp[kvp.length] = [key, value].join('=');
     }
 
     // can return this
@@ -38,25 +28,86 @@ function insertParam(key, value) {
 }
 
 
-sortByIdButton.addEventListener("click",function (){
-    insertParam("orderBy", "id");
+let sortForm = document.forms[0]
+let applyButton = document.getElementById("applyButton");
+let checkAllButton = document.getElementById("checkAll")
+let uncheckAllButton = document.getElementById("unCheckAll")
+let inputs = document.querySelectorAll('.types');
+let alreadyCheckedTypes = [];
+
+function checkAll() {
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].checked = true;
+    }
+}
+
+function uncheckAll() {
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].checked = false;
+    }
+}
+
+checkAllButton.addEventListener("click", function () {
+    checkAll();
 })
-sortByCreatedButton.addEventListener("click",function (){
-    insertParam('orderBy', "created");
+uncheckAllButton.addEventListener("click", function () {
+    uncheckAll();
 })
-sortByTitleButton.addEventListener("click",function (){
-    insertParam('orderBy', "title");
+
+applyButton.addEventListener("click", function () {
+    let types = "";
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].checked === true) {
+            types = types + inputs[i].value + ",";
+        }
+    }
+    types = types.slice(0, -1);
+
+    document.location.search = ("types=" + types + "&orderBy=" + sortForm.elements["sortBy"].value + "&order=" + sortForm.elements["order"].value);
+
 })
-sortByStartDateButton.addEventListener("click",function (){
-    insertParam('orderBy', "startDate");
-})
-sortByEndDateButton.addEventListener("click",function (){
-    insertParam('orderBy', "endDate");
-})
-orderAsc.addEventListener("click",function (){
-    insertParam('order', "asc");
-})
-orderDesc.addEventListener("click",function (){
-    insertParam('order', "desc");
-})
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    let kvp = document.location.search.substr(1).split('&');
+    let i = 0;
+    for (; i < kvp.length; i++) {
+        if (kvp[i].startsWith("types=")) {
+            alreadyCheckedTypes = kvp[i].substr(6).split(",");
+            break;
+        }
+    }
+
+    if (alreadyCheckedTypes.length > 0) {
+
+        for (let i = 0; i < inputs.length; i++) {
+            if (!alreadyCheckedTypes.includes(inputs[i].value)) {
+                inputs[i].checked = false;
+            }
+        }
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
