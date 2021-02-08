@@ -26,4 +26,7 @@ public interface TripService {
     void delete(Trip trip);
 
     Page<Trip> findPageByUserAndTypesOrderByX(User user, Set<Type> types, Pageable pageable);
+
+    Page<Trip> findPageByTypesOrderByX(Set<Type> types, Pageable pageable);
+
 }

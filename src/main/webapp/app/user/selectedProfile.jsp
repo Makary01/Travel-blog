@@ -18,15 +18,29 @@
     <p>Email: ${user.email}</p>
 
     User's latest trips:
-    <ul>
+    <table border="1">
+        <thead>
+        <th>id</th>
+        <th>Title</th>
+        <th>Types</th>
+
+        </thead>
         <c:forEach items="${user.trips}" var="trip">
-            <li><a href="/app/trip/${trip.id}">${trip.title}</a>|
-                <c:forEach items="${trip.types}" var="type">
-                    ${type.name}
-                </c:forEach>
-            </li>
+            <tr>
+                <td>
+                        ${trip.id}
+                </td>
+                <td>
+                    <a href="/app/trip/${trip.id}">${trip.title}</a>
+                </td>
+                <td>
+                    <c:forEach items="${trip.types}" var="type">
+                        ${type.name}
+                    </c:forEach>
+                </td>
+            </tr>
         </c:forEach>
-    </ul>
+    </table>
 </div>
 </body>
 </html>

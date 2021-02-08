@@ -13,24 +13,20 @@
 
 <div id="container">
     <h1>${trip.title}</h1>
-    <h2>Author: <a href="/app/user/${trip.user.id}">${trip.user.username}</a></h2>
+    <h2>Author: <a href="/app/user/${trip.user.id}">Me</a></h2>
     <h3>Created: ${trip.created}</h3>
-
-    <br><br><br>
-
+    <br>
     <p>Destination: ${trip.destination}</p>
     <p>Started: ${trip.startDate}</p>
     <p>Ended: ${trip.endDate}</p>
 
+    Content:
     <p>${trip.content}</p>
 
     <a href="/app/trip/${trip.id}/edit">Edit trip</a>
     <a href="/app/trip/${trip.id}/delete">Delete trip</a>
 
 </div>
-<a href="/app/user/edit">Edit profile</a>
-<a href="/app/user/change-password">Change password</a>
-<a href="/app/user/delete-account">Delete account</a>
-
+<a href="/app/user/${trip.user.id}">Profile</a>
 </body>
 </html>

@@ -21,13 +21,13 @@
     <input type="radio" id="created" name="sortBy" value="created" checked>
     <label for="created">Creation date</label><br>
 
-    <input type="radio" id="title" name="sortBy" value="created">
+    <input type="radio" id="title" name="sortBy" value="title">
     <label for="created">Title</label><br>
 
-    <input type="radio" id="startDate" name="sortBy" value="created">
+    <input type="radio" id="startDate" name="sortBy" value="startDate">
     <label for="created">Beginning of the journey</label><br>
 
-    <input type="radio" id="endDate" name="sortBy" value="created">
+    <input type="radio" id="endDate" name="sortBy" value="endDate">
     <label for="created">End of the journey</label><br>
 
     Order:<br>
@@ -38,7 +38,7 @@
 
     Type:<br>
     <c:forEach var="type" items="${allTypes}">
-        <input type="checkbox" id="${type.name}" name="types" class="types" value="${type.id}" checked>
+        <input type="checkbox" id="${type.name}" name="types" class="types" value="${type.id}">
         <label for="${type.name}">${type.name}</label>
     </c:forEach>
     <input type="button" id="checkAll" value="Select all">
@@ -47,10 +47,6 @@
     <input type="button" id="applyButton" value="Apply">
 
 </form>
-
-Type:
-
-
 
 <table border="1">
     <thead>

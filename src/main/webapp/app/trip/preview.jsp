@@ -15,13 +15,12 @@
     <h1>${trip.title}</h1>
     <h2>Author: <a href="/app/user/${trip.user.id}">${trip.user.username}</a></h2>
     <h3>Created: ${trip.created}</h3>
-
-    <br><br><br>
-
+    <br>
     <p>Destination: ${trip.destination}</p>
     <p>Started: ${trip.startDate}</p>
     <p>Ended: ${trip.endDate}</p>
 
+    Content:
     <p>${trip.content}</p>
 
 

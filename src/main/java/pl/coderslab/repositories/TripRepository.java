@@ -26,4 +26,5 @@ public interface TripRepository extends JpaRepository<Trip, Long>{
 
     Page<Trip> findDistinctByUserAndTypesIn(User user, Set<Type> types,Pageable pageable);
 
+    Page<Trip> findDistinctByTypesIn(Set<Type> types, Pageable pageable);
 }

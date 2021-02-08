@@ -75,6 +75,11 @@ public class TripServiceImpl implements TripService {
         return tripRepository.findDistinctByUserAndTypesIn(user, types, pageable);
     }
 
+    @Override
+    public Page<Trip> findPageByTypesOrderByX(Set<Type> types, Pageable pageable) {
+        return tripRepository.findDistinctByTypesIn(types, pageable);
+    }
+
     private <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {
         return IntStream.range(0, keys.size()).boxed()
                 .collect(Collectors.toMap(keys::get, values::get));
