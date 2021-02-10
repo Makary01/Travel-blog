@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.entity.Comment;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.Type;
 import pl.coderslab.exception.UniqueValuesException;
@@ -150,6 +151,8 @@ public class TripController {
         try {
             Trip trip = tripService.findById(id);
             model.addAttribute(trip);
+            Comment comment = new Comment();
+            model.addAttribute(comment);
             if (trip.getUser().getId() == currentUser.getUser().getId()) {
                 return "app/trip/ownPreview";
             }

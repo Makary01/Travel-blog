@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -23,11 +24,20 @@
     Content:
     <p>${trip.content}</p>
 
+    <form:form method="POST"
+               modelAttribute="comment"
+               action="/app/comment/add/${trip.id}">
+
+        <label for="content">Add comment:</label>
+        <form:textarea path="content"/>
+        <input type="submit" value="Save">
+
+        <p><form:errors path="*"/></p>
+    </form:form>
+
+    Comments:
+
 
 </div>
-<a href="/app/user/edit">Edit profile</a>
-<a href="/app/user/change-password">Change password</a>
-<a href="/app/user/delete-account">Delete account</a>
-
 </body>
 </html>
