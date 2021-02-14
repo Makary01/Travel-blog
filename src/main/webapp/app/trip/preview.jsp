@@ -36,8 +36,34 @@
     </form:form>
 
     Comments:
+    <c:forEach items="${comments}" var="comment">
+        <div class="comment">
+            <h5>${comment.user.username}</h5>
+            <h6>${comment.created}</h6>
+            <p>${comment.content}</p>
+            <c:if test="${comment.user.id == userId}">
+                <a href="/app/comment/edit/${comment.id}">edit</a>
+                <a href="/app/comment/delete/${comment.id}">delete</a>
+            </c:if>
+        </div>
+    </c:forEach>
+
+    <div id="pagination">
+        Page:
+        <c:if test="${currentPage>1}">
+            <button id="prevPage"> < </button>
+        </c:if>
+
+        <p id="currentPage">${currentPage} of ${totalPages}</p>
+
+        <c:if test="${currentPage<totalPages}">
+            <button id="nextPage"> > </button>
+        </c:if>
+
+    </div>
 
 
 </div>
 </body>
 </html>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/preview.js"></script>

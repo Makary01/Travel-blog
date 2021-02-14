@@ -1,7 +1,10 @@
 package pl.coderslab.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Comment;
+import pl.coderslab.entity.Trip;
 import pl.coderslab.repositories.CommentRepository;
 import pl.coderslab.service.CommentService;
 
@@ -29,5 +32,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
+    }
+
+    @Override
+    public Page<Comment> findTripsComments(Trip trip, Pageable pageable) {
+        return commentRepository.findDistinctByTripOrderByCreatedDesc(trip,pageable);
     }
 }

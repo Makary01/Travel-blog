@@ -58,7 +58,7 @@ public class TripServiceImpl implements TripService {
     public Trip saveEditedTrip(Trip trip) throws UniqueValuesException {
         Optional<Trip> tripByTitleOpt = tripRepository.findByTitle(trip.getTitle());
         if (tripByTitleOpt.isPresent()) {
-            if (tripByTitleOpt.get().getUser().getId() != trip.getId()) {
+            if (tripByTitleOpt.get().getUser().getId() != trip.getUser().getId()) {
                 throw new UniqueValuesException("title", "Title already taken");
             }
         }

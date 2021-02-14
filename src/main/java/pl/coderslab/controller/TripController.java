@@ -1,7 +1,6 @@
 package pl.coderslab.controller;
 
 import javassist.NotFoundException;
-import org.hibernate.mapping.Array;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Comment;
 import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.Type;
+import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
+import pl.coderslab.service.CommentService;
 import pl.coderslab.service.TripService;
 import pl.coderslab.service.TypeService;
 import pl.coderslab.utils.CurrentUser;
@@ -23,10 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/app/trip")
@@ -34,13 +32,16 @@ public class TripController {
 
     private final TripService tripService;
     private final TypeService typeService;
+    private final CommentService commentService;
     private Set<Type> types;
 
-    public TripController(TripService tripService, TypeService typeService) {
+    public TripController(TripService tripService, TypeService typeService, CommentService commentService) {
         this.tripService = tripService;
         this.typeService = typeService;
         types = typeService.findAllSet();
+        this.commentService = commentService;
     }
+
 
 
     //============================================
@@ -147,19 +148,34 @@ public class TripController {
     //============================================
     @GetMapping("/{id:\\d+}")
     public String read(@PathVariable Long id, HttpServletResponse response,
-                       @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException {
+                       @AuthenticationPrincipal CurrentUser currentUser, Model model,
+                       @RequestParam(name = "comments-page", defaultValue = "0") String page) throws IOException {
         try {
             Trip trip = tripService.findById(id);
+            User user = currentUser.getUser();
             model.addAttribute(trip);
             Comment comment = new Comment();
             model.addAttribute(comment);
-            if (trip.getUser().getId() == currentUser.getUser().getId()) {
+            Integer pageInt = 0;
+            pageInt = Integer.parseInt(page);
+            Page<Comment> comments = commentService.findTripsComments(trip, PageRequest.of(pageInt,20));
+            if (pageInt > comments.getTotalPages()) {
+                pageInt = 0;
+                comments = commentService.findTripsComments(trip, PageRequest.of(pageInt,20));
+            }
+            model.addAttribute("userId",user.getId());
+            model.addAttribute("comments",comments.getContent());
+            model.addAttribute("currentPage",pageInt+1);
+            model.addAttribute("totalPages",comments.getTotalPages());
+            if (trip.getUser().getId() == user.getId()) {
                 return "app/trip/ownPreview";
             }
-
         } catch (NotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (NumberFormatException e){
+
         }
+
         return "app/trip/preview";
     }
 

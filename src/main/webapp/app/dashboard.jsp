@@ -21,13 +21,13 @@
     <input type="radio" id="created" name="sortBy" value="created" checked>
     <label for="created">Creation date</label><br>
 
-    <input type="radio" id="title" name="sortBy" value="created">
+    <input type="radio" id="title" name="sortBy" value="title">
     <label for="created">Title</label><br>
 
-    <input type="radio" id="startDate" name="sortBy" value="created">
+    <input type="radio" id="startDate" name="sortBy" value="startDate">
     <label for="created">Beginning of the journey</label><br>
 
-    <input type="radio" id="endDate" name="sortBy" value="created">
+    <input type="radio" id="endDate" name="sortBy" value="endDate">
     <label for="created">End of the journey</label><br>
 
     Order:<br>
@@ -77,14 +77,16 @@
 
 <div id="pagination">
     Page:
-    <c:if test="${currentPage>totalPages}">
-        <button><</button>
+    <c:if test="${currentPage>1}">
+        <button id="prevPage"> < </button>
     </c:if>
-    ${currentPage}
+
+    <p id="currentPage">${currentPage} of ${totalPages}</p>
+
     <c:if test="${currentPage<totalPages}">
-        <button>></button>
+        <button id="nextPage"> > </button>
     </c:if>
-    of ${totalPages}
+
 </div>
 </body>
 </html>

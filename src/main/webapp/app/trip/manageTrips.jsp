@@ -58,10 +58,10 @@
     <c:forEach items="${trips}" var="trip">
         <tr>
             <td>
-                ${trip.id}
+                    ${trip.id}
             </td>
             <td>
-                ${trip.title}
+                    ${trip.title}
             </td>
             <td>
                 <c:forEach items="${trip.types}" var="type">
@@ -79,14 +79,16 @@
 
 <div id="pagination">
     Page:
-    <c:if test="${currentPage>totalPages}">
-        <button><</button>
+    <c:if test="${currentPage>1}">
+        <button id="prevPage"> < </button>
     </c:if>
-    ${currentPage}
+
+    <p id="currentPage">${currentPage} of ${totalPages}</p>
+
     <c:if test="${currentPage<totalPages}">
-    <button>></button>
+        <button id="nextPage"> > </button>
     </c:if>
-    of ${totalPages}
+
 </div>
 <a href="/app/user/edit">Edit profile</a>
 <a href="/app/user/change-password">Change password</a>
