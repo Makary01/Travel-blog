@@ -19,6 +19,7 @@ import pl.coderslab.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -114,11 +115,15 @@ public class UserController {
     public String changePasswordAction(@AuthenticationPrincipal CurrentUser currentUser,
                                        @ModelAttribute PasswordChanger passwordChanger, BindingResult result) {
         User user = currentUser.getUser();
-        passwordChanger.validatePasswords(result, user.getUsername(), userService);
+        List<ObjectError> errors = userService.validateNewPassword(user.getUsername(), passwordChanger);
+        if (result.hasErrors()) {
+            return "app/user/changePassword";
+        }
+        errors.forEach(e -> result.addError(e));
         if (result.hasErrors()) {
             return "app/user/changePassword";
         } else {
-            passwordChanger.saveNewPassword(user, userService);
+            userService.saveNewPassword(user.getUsername(), passwordChanger.getNewPassword());
             return "redirect:/app/dashboard";
         }
 

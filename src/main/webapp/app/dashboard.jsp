@@ -61,7 +61,7 @@
                     ${trip.id}
             </td>
             <td>
-                    ${trip.title}
+                <a href="/app/trip/${trip.id}">${trip.title}</a>
             </td>
             <td>
                 <c:forEach items="${trip.types}" var="type">

@@ -37,7 +37,7 @@ public class CommentController {
 
 
     @PostMapping("/add/{id:\\d+}")
-    public String addComment(@AuthenticationPrincipal CurrentUser currentUser,
+    public String add(@AuthenticationPrincipal CurrentUser currentUser,
                              @PathVariable("id") Long id,
                              @ModelAttribute Comment comment, BindingResult result){
         if(result.hasErrors()) return "redirect:/app/trip/" + id;
@@ -58,23 +58,25 @@ public class CommentController {
     }
 
     @GetMapping("/edit/{id:\\d+}")
-    public String editComment(@AuthenticationPrincipal CurrentUser currentUser,
+    public String edit(@AuthenticationPrincipal CurrentUser currentUser,
                              @PathVariable("id") Long id, HttpServletResponse response,Model model) throws IOException {
         Optional<Comment> commentOptional = commentService.findById(id);
         if (commentOptional.isPresent()){
             if(commentOptional.get().getUser().getId() == currentUser.getUser().getId()){
                 model.addAttribute("comment",commentOptional.get());
             }else {
+                model.addAttribute("comment",new Comment());
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
         }else {
+            model.addAttribute("comment",new Comment());
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         return "app/comment/edit";
     }
 
     @PostMapping("/edit/{id:\\d+}")
-    public String editCommentAction(@AuthenticationPrincipal CurrentUser currentUser,
+    public String editAction(@AuthenticationPrincipal CurrentUser currentUser,
                                     @PathVariable("id") Long id, HttpServletResponse response,Model model,
                                     @ModelAttribute("comment") @Valid Comment comment, BindingResult result) throws IOException {
         if (result.hasErrors()) {
