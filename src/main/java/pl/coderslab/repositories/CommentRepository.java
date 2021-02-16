@@ -14,4 +14,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findDistinctByTripOrderByCreatedDesc(Trip trip, Pageable pageable);
 
 
+    void deleteByTrip(Trip trip);
 }

@@ -5,9 +5,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.ObjectError;
 import pl.coderslab.entity.Role;
+import pl.coderslab.entity.Trip;
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
+import pl.coderslab.repositories.CommentRepository;
 import pl.coderslab.repositories.RoleRepository;
+import pl.coderslab.repositories.TripRepository;
 import pl.coderslab.repositories.UserRepository;
 import pl.coderslab.service.TripService;
 import pl.coderslab.service.UserService;
@@ -23,11 +26,15 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final TripRepository tripRepository;
+    private final CommentRepository commentRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final TripService tripService;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder, TripService tripService) {
+                           TripRepository tripRepository, CommentRepository commentRepository, BCryptPasswordEncoder passwordEncoder, TripService tripService) {
+        this.tripRepository = tripRepository;
+        this.commentRepository = commentRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -111,6 +118,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(User user) {
+
+        for (Trip trip : tripRepository.findByUser(user)) {
+            commentRepository.deleteByTrip(trip);
+        }
+        tripRepository.deleteByUser(user);
         userRepository.delete(user);
     }
 

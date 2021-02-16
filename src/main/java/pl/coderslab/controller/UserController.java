@@ -5,6 +5,7 @@ import javassist.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import pl.coderslab.entity.User;
 import pl.coderslab.exception.UniqueValuesException;
+import pl.coderslab.service.TripService;
 import pl.coderslab.utils.CurrentUser;
 import pl.coderslab.utils.PasswordChanger;
 import pl.coderslab.service.UserService;
@@ -21,15 +23,17 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-
+@Transactional
 @Controller
 @RequestMapping("/app/user")
 public class UserController {
 
     private final UserService userService;
+    private final TripService tripService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TripService tripService) {
         this.userService = userService;
+        this.tripService = tripService;
     }
 
 

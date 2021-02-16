@@ -5,6 +5,7 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Set;
-
+@Transactional
 @Entity
 @Data
 public class Trip {

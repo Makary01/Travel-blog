@@ -2,6 +2,7 @@ package pl.coderslab.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -16,6 +17,7 @@ import pl.coderslab.utils.CurrentUser;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@Transactional
 @Controller
 public class HomeController {
 
