@@ -3,23 +3,34 @@
 <html>
 <head>
     <title>My profile</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
+<div class="wrapper">
+    <div class="header">
+        <a href="/app/dashboard" class="logo">Travel blog</a>
+        <div class="header-right">
+            <a href="/app/dashboard">Home</a>
+            <a href="/app/trip/add">Add trip</a>
+            <a href="/app/trip">My trips</a>
+            <a href="/app/user" class="active">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <div id="container">
+    <div id="profileData">
+        <h1>My profile</h1>
+    <h2>User nr ${user.id}</h2>
+    <h3>Username: ${user.username}</h3>
+    <h4>From: ${user.city},${user.country}</h4>
+    <h4>Email: ${user.email}</h4>
+        <a href="/app/user/edit">Edit profile</a>
+        <a href="/app/user/change-password">Change password</a>
+        <a href="/app/user/delete-account">Delete account</a>
+        <h4>My latest trips:</h4>
+    </div>
 
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
 
-<h1>My profile</h1>
-
-<div id="container">
-    <p>User nr ${user.id}</p>
-    <p>Username: ${user.username}</p>
-    <p>From: ${user.city},${user.country}</p>
-    <p>Email: ${user.email}</p>
-
-    My latest trips:
     <table border="1">
         <thead>
         <th>id</th>
@@ -44,9 +55,10 @@
         </c:forEach>
     </table>
 </div>
-<a href="/app/user/edit">Edit profile</a>
-<a href="/app/user/change-password">Change password</a>
-<a href="/app/user/delete-account">Delete account</a>
-
+    <div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
+</div>
 </body>
 </html>

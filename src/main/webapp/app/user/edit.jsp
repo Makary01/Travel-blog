@@ -4,17 +4,25 @@
 <html>
 <head>
     <title>Edit profile</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
+<div class="wrapper">
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
-<h1>Edit profile</h1>
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
 <form:form method="POST"
            modelAttribute="user"
            action="/app/user/edit">
+    <h1>Edit profile</h1><br>
     <label for="username">Username:</label>
     <form:input path="username" />
 
@@ -31,8 +39,15 @@
     <form:password path="password" />
 
     <input type="submit" value="Save">
+    <button onclick="goBack()">Go Back</button>
+    <script>function goBack() {window.history.back();}</script>
     <p><form:errors path="*" /></p>
 </form:form>
 <a href="/app/user/change-password">Change password</a>
+    <div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
+</div>
 </body>
 </html>

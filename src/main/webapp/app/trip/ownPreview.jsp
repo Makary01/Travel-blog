@@ -4,13 +4,20 @@
 <html>
 <head>
     <title>My Trip</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
-
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
+<div class="wrapper">
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
 <div id="container">
     <h1>${trip.title}</h1>
@@ -27,18 +34,23 @@
     <a href="/app/trip/edit/${trip.id}">Edit trip</a>
     <a href="/app/trip/delete/${trip.id}">Delete trip</a>
 
+
+
+    Comments:
     <form:form method="POST"
                modelAttribute="comment"
-               action="/app/comment/add/${trip.id}">
+               action="/app/comment/add/${trip.id}" id="addCommentForm">
 
-        <label for="content">Add comment:</label>
-        <form:textarea path="content"/>
-        <input type="submit" value="Save">
+        <div style="width: 50%">
+            <form:textarea path="content"  placeholder="Add comment"/>
+            <input type="submit" value="Save">
+        </div>
+        <button onclick="goBack()">Go Back</button>
+        <script>function goBack() {window.history.back();}</script>
 
         <p><form:errors path="*"/></p>
     </form:form>
 
-    Comments:
     <c:forEach items="${comments}" var="comment">
         <div class="comment">
             <h5>${comment.user.username}</h5>
@@ -66,7 +78,11 @@
     </div>
 
 </div>
-
+    <div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
+</div>
 </body>
 </html>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/preview.js"></script>

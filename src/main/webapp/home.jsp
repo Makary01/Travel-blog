@@ -4,13 +4,15 @@
 <html>
 <head>
     <title>Travel blog</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
+
 </head>
-<body>
+<body style="background-color: #facb88">
+<div id="home" style="background-color: #ffecda">
 <h1>Welcome in trip blog!</h1>
-<a href="/app/dashboard">Log in</a>
-<a href="/register">Register</a>
-<a href="/about">About app</a>
+    <a href="/about">About app</a>
+    <a href="/app/dashboard">Log in</a>
+    <a href="/register">Register</a>
 </div>
 </body>
 </html>

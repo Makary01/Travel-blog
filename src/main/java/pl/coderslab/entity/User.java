@@ -39,7 +39,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany
     private List<Trip> trips;
 
     @Email(message = "Enter valid email")

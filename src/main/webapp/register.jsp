@@ -4,31 +4,29 @@
 <html>
 <head>
     <title>Register</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
+
 <body>
 <form:form method="POST"
            modelAttribute="user"
-           action="/register">
-    <label for="username">Username:</label>
-    <form:input path="username" />
+           action="/register" id="register">
 
-    <label for="password">Password:</label>
-    <form:password path="password" />
+    <p>Please sign up</p>
 
-    <label for="email">Email:</label>
-    <form:input path="email" />
+    <form:input path="username" placeholder="Username"/>
 
-    <label for="city">City:</label>
-    <form:input path="city"/>
+    <form:password path="password" placeholder="Password"/>
 
-    <label for="country">Country:</label>
-    <form:input path="country"/>
+    <form:input path="email" placeholder="Email"/>
 
-    <input type="submit" value="Register">
+    <form:input path="city" placeholder="City"/>
+
+    <form:input path="country" placeholder="Country"/>
+
+    <input type="submit" value="Register" style="cursor: pointer">
     <p><form:errors path="*" /></p>
 </form:form>
-
 </div>
 </body>
 </html>

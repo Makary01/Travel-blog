@@ -4,19 +4,34 @@
 <html>
 <head>
     <title>Delete account</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
+<div class="wrapper">
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
-<h1>Are you sure that you want to delete your account permanently?</h1>
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
 <form:form method="POST"
            action="/app/user/delete-account">
-    <input type="submit" value="Delete account">
+    <label for="submit">Do you want to delete your account?</label>
+    <input type="submit" id="submit" value="Delete account">
+    <button onclick="goBack()">Go Back</button>
+    <script>function goBack() {window.history.back();}</script>
 </form:form>
 
+
+<div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
 </div>
 </body>
 </html>

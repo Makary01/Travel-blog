@@ -4,39 +4,53 @@
 <html>
 <head>
     <title>Edit trip</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
 
 <form:form method="POST"
            modelAttribute="trip"
            action="/app/trip/edit/${trip.id}">
     <label for="title">Title:</label>
-    <form:input path="title"/>
+    <form:input path="title"/><br>
 
     <label for="types">Type(s) of trip:</label>
-    <form:checkboxes items="${types}" path="types" itemLabel="name"/>
+    <form:checkboxes items="${types}" path="types" itemLabel="name"/><br>
 
     <label for="destination">Destination:</label>
-    <form:input path="destination"/>
+    <form:input path="destination"/><br>
 
-    <label for="content">Content:</label>
-    <form:textarea path="content"/>
+    <label for="content">Content:</label><br>
+    <form:textarea path="content"/><br>
 
     <label for="startDate">The beginning of the journey :</label>
-    <form:input type="date" path="startDate"/>
+    <form:input type="date" path="startDate"/><br>
 
     <label for="endDate">the end of the journey :</label>
-    <form:input type="date" path="endDate"/>
+    <form:input type="date" path="endDate"/><br>
 
-    <input type="submit" value="Save">
+    <input type="submit" value="Save"><br>
+    <button onclick="goBack()">Go Back</button>
+    <script>function goBack() {window.history.back();}</script>
     <p><form:errors path="*"/></p>
 </form:form>
 
+
+<div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
 </div>
 </body>
 </html>

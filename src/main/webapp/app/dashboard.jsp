@@ -4,18 +4,23 @@
 <html>
 <head>
     <title>Dashboard</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
-<h1>Welcome ${user.username}!</h1>
-<a href="/app/user">My Profile</a>
-<a href="/app/trip">My trips</a>
-<a href="/app/trip/add">Add trip</a>
-<a href="/logout">Logout</a>
+<div class="wrapper">
+
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard" class="active">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
 </div>
 
-
-
+<h1 style="width: 100%; text-align: center">Trips:</h1>
 <form id="sortForm">
     Sort by:<br>
     <input type="radio" id="created" name="sortBy" value="created" checked>
@@ -76,17 +81,22 @@
 </table>
 
 <div id="pagination">
-    Page:
+    Page:<br>
     <c:if test="${currentPage>1}">
         <button id="prevPage"> < </button>
     </c:if>
 
-    <p id="currentPage">${currentPage} of ${totalPages}</p>
+    <p id="currentPage"> ${currentPage} of ${totalPages} </p>
 
     <c:if test="${currentPage<totalPages}">
         <button id="nextPage"> > </button>
     </c:if>
 
+</div>
+<div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
 </div>
 </body>
 </html>

@@ -2,19 +2,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>My profile</title>
-    <link href="style.css" rel="stylesheet">
+    <title>My trips</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 
 </head>
 <body>
+<div class="wrapper">
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip" class="active">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {
-    window.history.back();
-}</script>
-
-<h1>My trips</h1>
 
 <form id="sortForm">
     Sort by:<br>
@@ -45,7 +49,6 @@
     <input type="button" id="unCheckAll" value="Unselect all">
 
     <input type="button" id="applyButton" value="Apply">
-
 </form>
 
 <table border="1">
@@ -90,9 +93,11 @@
     </c:if>
 
 </div>
-<a href="/app/user/edit">Edit profile</a>
-<a href="/app/user/change-password">Change password</a>
-<a href="/app/user/delete-account">Delete account</a>
+    <div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
+</div>
 </body>
 </html>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/manageTrips.js"></script>

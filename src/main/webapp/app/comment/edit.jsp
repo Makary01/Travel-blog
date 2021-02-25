@@ -4,13 +4,20 @@
 <html>
 <head>
     <title>Edit trip</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 </head>
 <body>
-
-<a href="/app/dashboard">Back to home page</a><br>
-<button onclick="goBack()">Go Back</button>
-<script>function goBack() {window.history.back();}</script>
+<div class="wrapper">
+<div class="header">
+    <a href="/app/dashboard" class="logo">Travel blog</a>
+    <div class="header-right">
+        <a href="/app/dashboard">Home</a>
+        <a href="/app/trip/add">Add trip</a>
+        <a href="/app/trip">My trips</a>
+        <a href="/app/user">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
 
 <form:form method="POST"
            modelAttribute="comment"
@@ -19,10 +26,17 @@
     <label for="content">Edit comment:</label>
     <form:textarea path="content"/>
     <input type="submit" value="Save">
+    <button onclick="goBack()">Go Back</button>
+    <script>function goBack() {window.history.back();}</script>
 
     <p><form:errors path="*"/></p>
 </form:form>
 
+
+    <div class="push"></div>
+</div>
+<div class="footer">
+    <p>&copy Makary Bortnowski</p>
 </div>
 </body>
 </html>
