@@ -31,8 +31,8 @@ let nextPage = document.getElementById("nextPage")
 let prevPage = document.getElementById("prevPage")
 
 nextPage.addEventListener("click", function (){
-    insertParam("comment-page",parseInt(currentPage.innerText))
+    insertParam("comments-page",parseInt(currentPage.innerText))
 })
 prevPage.addEventListener("click", function (){
-    insertParam("comment-page",parseInt(currentPage.innerText)-2)
+    insertParam("comments-page",parseInt(currentPage.innerText)-2)
 })

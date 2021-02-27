@@ -97,10 +97,11 @@ function insertParam(key, value) {
 let currentPage = document.getElementById("currentPage")
 let nextPage = document.getElementById("nextPage")
 let prevPage = document.getElementById("prevPage")
-
-nextPage.addEventListener("click", function (){
-    insertParam("page",parseInt(currentPage.innerText))
-})
+if(nextPage != null){
+    nextPage.addEventListener("click", function (){
+        insertParam("page",parseInt(currentPage.innerText))
+    })
+}
 prevPage.addEventListener("click", function (){
     insertParam("page",parseInt(currentPage.innerText)-2)
 })

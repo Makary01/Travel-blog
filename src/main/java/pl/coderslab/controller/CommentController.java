@@ -47,6 +47,7 @@ public class CommentController {
         User user = currentUser.getUser();
         user.setTrips(new ArrayList<Trip>());
         comment.setUser(user);
+        comment.setId(null);
         comment.setCreated(LocalDate.now());
         Trip trip;
         try {
